@@ -1,0 +1,9 @@
+# Build customization
+builds:
+  - binary: rabbitr
+    goos:
+      - windows
+      - darwin
+      - linux
+    goarch:
+      - amd64

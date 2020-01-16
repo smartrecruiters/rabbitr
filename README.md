@@ -59,7 +59,7 @@ rabbitr queues list -s my-server-name --filter="queue.Consumers==0 && queue.Mess
 
 rabbitr queues purge -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
 
-rabbitr queue move -s my-server-name --src-vhost vhost1 --src-queue test-queue --dst-vhost vhost2 --dst-queue new-destination-queue"
+rabbitr queue move -s my-server-name --src-vhost vh1 --src-queue q1 --dst-vhost vh2 --dst-queue q2
 
 ```
 

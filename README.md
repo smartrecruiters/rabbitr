@@ -48,19 +48,12 @@ Example commands:
 
 ```
 rabbitr server add -s my-server-name -api-url http://localhost:15672 -u user -p pass
-
 rabbitr queues list -s my-server-name
-
 rabbitr queues sync -s my-server-name
-
 rabbitr queues list -s my-server-name --filter="queue.Consumers==0"
-
 rabbitr queues list -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
-
 rabbitr queues purge -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
-
 rabbitr queue move -s my-server-name --src-vhost vh1 --src-queue q1 --dst-vhost vh2 --dst-queue q2
-
 ```
 
 ## Advanced filtering

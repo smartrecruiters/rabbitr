@@ -9,6 +9,7 @@ import (
 const AllSubjects = "1==1"
 const NoneOfTheSubjects = "1!=1"
 const QueueFilterFields = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
+const ExchangeFilterFields = "exchange.Name/Vhost/Type/Durable/AutoDelete/Internal/Arguments (a map with string keys)"
 
 var ServerFlag cli.StringFlag
 var DryRunFlag cli.BoolFlag

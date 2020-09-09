@@ -30,7 +30,7 @@ func ExecuteOperation(ctx *cli.Context, client *rabbithole.Client, subjects *[]i
 	filter := ctx.String("filter")
 	dryRun := ctx.Bool("dry-run")
 
-	matchExpression, err := govaluate.NewEvaluableExpression(filter)
+	matchExpression, err := govaluate.NewEvaluableExpressionWithFunctions(filter, GetCustomFilterFunctions())
 	AbortIfError(err)
 	p, bar := initializeProgressBar(subjects)
 

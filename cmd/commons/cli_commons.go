@@ -8,7 +8,7 @@ import (
 
 const AllSubjects = "1==1"
 const NoneOfTheSubjects = "1!=1"
-const QueueFilterFields = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady"
+const QueueFilterFields = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
 
 var ServerFlag cli.StringFlag
 var DryRunFlag cli.BoolFlag
@@ -34,6 +34,6 @@ func GetFilterFlag(defaultValue, availableFields string) cli.StringFlag {
 	return cli.StringFlag{
 		Name:  "filter, f",
 		Value: defaultValue,
-		Usage: fmt.Sprintf("Optional. Filter used to narrow list of subjects. It uses https://github.com/Knetic/govaluate engine. Fields available in filter: %s", availableFields),
+		Usage: fmt.Sprintf("Optional. Filter used to narrow list of subjects. It uses https://github.com/Knetic/govaluate engine. Fields available in filter: %s. Functions availble: getMapValueByKey(mapWithStringKeys, keyName)", availableFields),
 	}
 }

@@ -25,7 +25,9 @@ func GetCommands() []cli.Command {
 						"rabbitr queues list -s my-server-from-cfg\t# will list all queues from my-server-from-cfg\n\t" +
 						"rabbitr queues list -s my-server-from-cfg -f 'queue.Name=~\"my-queue\"'\t# will list queues from my-server-from-cfg which's name matches the 'my-queue' string\n\t" +
 						"rabbitr queues list -s my-server-from-cfg -f 'queue.Messages>200'\t# will list queues from to my-server-from-cfg with more than 200 messages\n\t" +
-						"rabbitr queues list -s my-server-from-cfg -f 'queue.Consumers==0'\t# will list queues from to my-server-from-cfg that have 0 consumers\n\t",
+						"rabbitr queues list -s my-server-from-cfg -f 'queue.Consumers==0'\t# will list queues from to my-server-from-cfg that have 0 consumers\n\t" +
+						"rabbitr queues list -s my-server-from-cfg -f 'getMapValueByKey(queue.Arguments,\"x-max-priority\")==10'\t# will list queues from to my-server-from-cfg that have x-max-priority=10 defined in the queue arguments\n\t" +
+						"rabbitr queues list -s my-server-from-cfg -f 'getMapValueByKey(queue.Arguments,\"x-queue-owner\")==\"queue@owner.com\"'\t# will list queues from to my-server-from-cfg that have x-queue-owner='queue@owner.com' defined in the queue arguments\n\t",
 				},
 				{
 					Name: "delete",

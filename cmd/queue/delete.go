@@ -22,5 +22,6 @@ func deleteQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.W
 	commons.PrintIfErrorWithMsg(fmt.Sprintf("Error occured when attempting to delete a queue %s/%s", q.Vhost, q.Name), err)
 	if res != nil {
 		fmt.Fprintf(w, "Response code: %d\t", res.StatusCode)
+		commons.PrintResponseBodyIfError(res)
 	}
 }

@@ -2,6 +2,8 @@ package queue
 
 import (
 	"fmt"
+	"github.com/smartrecruiters/rabbitr/cmd/server"
+	"strings"
 
 	rabbithole "github.com/michaelklishin/rabbit-hole"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
@@ -9,11 +11,12 @@ import (
 )
 
 func moveMessagesCmd(ctx *cli.Context) error {
-	server := ctx.String("server-name")
-	srcVHost := ctx.String("src-vhost")
-	dstVHost := ctx.String("dst-vhost")
-	srcQueue := ctx.String("src-queue")
-	dstQueue := ctx.String("dst-queue")
+	s := server.AskForServerSelection(ctx.String("server-name"))
+	srcVHost := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("src-vhost")), "src-vhost")
+	srcQueue := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("src-queue")), "src-queue")
+	dstQueue := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("dst-queue")), "dst-queue")
+	dstVHost := strings.TrimSpace(ctx.String("dst-vhost"))
+
 	name := "Move from " + srcQueue
 	if len(dstVHost) <= 0 {
 		dstVHost = srcVHost
@@ -30,9 +33,12 @@ func moveMessagesCmd(ctx *cli.Context) error {
 		DeleteAfter:       "queue-length",
 	}
 
-	client := commons.GetRabbitClient(server)
+	client := commons.GetRabbitClient(s)
 	res, err := client.DeclareShovel(srcVHost, name, definition)
+	if res != nil {
+		fmt.Printf("Creating temporary shovel to move messages, Response code: %d\t\n", res.StatusCode)
+		commons.PrintResponseBodyIfError(res)
+	}
 	commons.AbortIfError(err)
-	fmt.Printf("Created temporary shovel to move messages, Response code: %d\t\n", res.StatusCode)
 	return nil
 }

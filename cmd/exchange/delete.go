@@ -22,5 +22,6 @@ func deleteExchangeFn(client *rabbithole.Client, exchange *interface{}, w *tabwr
 	commons.PrintIfErrorWithMsg(fmt.Sprintf("Error occured when attempting to delete an exchange %s/%s", e.Vhost, e.Name), err)
 	if res != nil {
 		fmt.Fprintf(w, "Response code: %d\t", res.StatusCode)
+		commons.PrintResponseBodyIfError(res)
 	}
 }

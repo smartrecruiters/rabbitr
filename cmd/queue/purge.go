@@ -22,5 +22,6 @@ func purgeQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.Wr
 	commons.PrintIfErrorWithMsg(fmt.Sprintf("Error occured when attempting to purge queue %s/%s", q.Vhost, q.Name), err)
 	if res != nil {
 		fmt.Fprintf(w, "Response code: %d\t", res.StatusCode)
+		commons.PrintResponseBodyIfError(res)
 	}
 }

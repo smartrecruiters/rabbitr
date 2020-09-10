@@ -9,10 +9,11 @@ import (
 )
 
 func addServerCmd(ctx *cli.Context) {
-	serverName := ctx.String("server-name")
-	apiUrl := ctx.String("url")
-	username := ctx.String("username")
-	password := ctx.String("password")
+	serverName := commons.AskIfValueEmpty(ctx.String("server-name"), "server-name")
+	apiUrl := commons.AskWithValidator(ctx.String("url"), "API url (for example: https://localhost:15672)", commons.IsUrlValidator)
+	username := commons.AskIfValueEmpty(ctx.String("username"), "username")
+	password := commons.AskIfValueEmpty(ctx.String("password"), "password")
+
 	fmt.Printf("Adding configuration for server %s:\n\t api url: %s\n\t username: %s\n\t password: %s\n", serverName, apiUrl, username, password)
 
 	cfg, err := commons.GetApplicationConfig()

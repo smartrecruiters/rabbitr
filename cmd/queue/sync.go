@@ -22,5 +22,6 @@ func syncQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.Wri
 	commons.PrintIfErrorWithMsg(fmt.Sprintf("Error occured when attempting to sync queue %s/%s", q.Vhost, q.Name), err)
 	if res != nil {
 		fmt.Fprintf(w, "Response code: %d\t", res.StatusCode)
+		commons.PrintResponseBodyIfError(res)
 	}
 }

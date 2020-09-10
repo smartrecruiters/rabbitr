@@ -17,3 +17,23 @@ func ConvertToSliceOfInterfaces(slice interface{}) []interface{} {
 
 	return sliceOfInterfaces
 }
+
+// Returns the first index of the target string t, or -1 if no match is found.
+func Index(vs []string, t string) int {
+	for i, v := range vs {
+		if v == t {
+			return i
+		}
+	}
+	return -1
+}
+
+// Returns true if the target string t is in the slice.
+func Include(vs []string, t string) bool {
+	return Index(vs, t) >= 0
+}
+
+// Returns true if the target string t is in the slice.
+func Contains(vs []string, t string) bool {
+	return Include(vs, t)
+}

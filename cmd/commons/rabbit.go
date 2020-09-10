@@ -2,7 +2,10 @@ package commons
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 	"os"
+	"strings"
 
 	rabbithole "github.com/michaelklishin/rabbit-hole"
 )
@@ -21,4 +24,13 @@ func GetRabbitClient(serverName string) *rabbithole.Client {
 	client, err := rabbithole.NewClient(coordinates.ApiURL, coordinates.Username, coordinates.Password)
 	AbortIfError(err)
 	return client
+}
+
+func PrintResponseBodyIfError(res *http.Response) {
+	if res != nil && res.StatusCode >= 400 {
+		buf := new(strings.Builder)
+		_, err := io.Copy(buf, res.Body)
+		PrintIfError(err)
+		fmt.Println(buf.String())
+	}
 }

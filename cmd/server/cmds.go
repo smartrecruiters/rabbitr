@@ -19,7 +19,7 @@ func GetCommands() []cli.Command {
 						commons.ServerFlag,
 						cli.StringFlag{
 							Name:  "api-url, url",
-							Value: "http://localhost:15672",
+							Value: "",
 							Usage: "Required. RabbitMQ api url",
 						},
 						cli.StringFlag{

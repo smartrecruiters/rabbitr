@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/urfave/cli"
 
@@ -12,9 +13,9 @@ func addServerCmd(ctx *cli.Context) {
 	serverName := commons.AskIfValueEmpty(ctx.String("server-name"), "server-name")
 	apiUrl := commons.AskWithValidator(ctx.String("url"), "API url (for example: https://localhost:15672)", commons.IsUrlValidator)
 	username := commons.AskIfValueEmpty(ctx.String("username"), "username")
-	password := commons.AskIfValueEmpty(ctx.String("password"), "password")
+	password := commons.AskForPasswordIfEmpty(ctx.String("password"), "password")
 
-	fmt.Printf("Adding configuration for server %s:\n\t api url: %s\n\t username: %s\n\t password: %s\n", serverName, apiUrl, username, password)
+	fmt.Printf("Adding configuration for server %s:\n\t api url: %s\n\t username: %s\n\t password: %s\n", serverName, apiUrl, username, strings.Repeat("*", len(password)))
 
 	cfg, err := commons.GetApplicationConfig()
 	commons.AbortIfError(err)

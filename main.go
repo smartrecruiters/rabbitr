@@ -10,6 +10,7 @@ import (
 	"github.com/smartrecruiters/rabbitr/cmd/policy"
 	"github.com/smartrecruiters/rabbitr/cmd/queue"
 	"github.com/smartrecruiters/rabbitr/cmd/server"
+	"github.com/smartrecruiters/rabbitr/cmd/shovel"
 	"github.com/urfave/cli"
 )
 
@@ -38,6 +39,7 @@ func main() {
 	app.Commands = append(app.Commands, policy.GetCommands()...)
 	app.Commands = append(app.Commands, queue.GetCommands()...)
 	app.Commands = append(app.Commands, server.GetCommands()...)
+	app.Commands = append(app.Commands, shovel.GetCommands()...)
 
 	cli.AppHelpTemplate = commons.GetAppHelpTemplate()
 	cli.CommandHelpTemplate = commons.GetCommandHelpTemplate()

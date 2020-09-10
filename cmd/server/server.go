@@ -1,9 +1,10 @@
 package server
 
 import (
+	"strings"
+
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 	"gopkg.in/AlecAivazis/survey.v2"
-	"strings"
 )
 
 func AskForServerSelection(server string) string {

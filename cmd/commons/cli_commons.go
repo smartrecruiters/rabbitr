@@ -3,9 +3,10 @@ package commons
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/AlecAivazis/survey.v2"
 	"net/url"
 	"strings"
+
+	"gopkg.in/AlecAivazis/survey.v2"
 
 	"github.com/urfave/cli"
 )
@@ -14,6 +15,7 @@ const AllSubjects = "1==1"
 const NoneOfTheSubjects = "1!=1"
 const QueueFilterFields = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
 const ExchangeFilterFields = "exchange.Name/Vhost/Type/Durable/AutoDelete/Internal/Arguments (a map with string keys)"
+const ShovelFilterFields = "shovel.Name/Vhost"
 
 var ServerFlag cli.StringFlag
 var DryRunFlag cli.BoolFlag
@@ -49,6 +51,20 @@ func AskIfValueEmpty(value, name string) string {
 		return value
 	}
 	return strings.TrimSpace(AskWithValidator(value, name, NotEmptyValidator))
+}
+
+func AskForPasswordIfEmpty(value, name string) string {
+	value = strings.TrimSpace(value)
+	if len(value) > 0 {
+		return value
+	}
+
+	prompt := &survey.Password{
+		Message: fmt.Sprintf("Please provide %s", name),
+	}
+	err := survey.AskOne(prompt, &value, survey.WithValidator(NotEmptyValidator))
+	AbortIfError(err)
+	return strings.TrimSpace(value)
 }
 
 func AskWithValidator(value, name string, validator survey.Validator) string {

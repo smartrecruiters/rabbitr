@@ -20,6 +20,8 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
      - [x] add
      - [x] delete
      - [x] list
+ - shovels     
+     - [x] list
  - policies     
      - [x] list
  
@@ -60,3 +62,8 @@ Rabbitr uses [goevaluate](https://github.com/Knetic/govaluate#govaluate) library
 It can be useful to determine list of subjects that match given criteria.
 It allows for creating flexible conditions considering for example only queues with particular name, vhost, defined number of consumers or messages.
 Check command descriptions for a list of properties available for use on given resource type.     
+
+## TODO Ideas
+- duplicate queue - move messages from a single queue through the exchange to the two newly created queues, in effect multiplying the messages 
+- move messages from one queue to the other and strip some headers on the way
+- dump messages from a queue to a file (may be tricky as messages can have various content)

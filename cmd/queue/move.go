@@ -2,8 +2,9 @@ package queue
 
 import (
 	"fmt"
-	"github.com/smartrecruiters/rabbitr/cmd/server"
 	"strings"
+
+	"github.com/smartrecruiters/rabbitr/cmd/server"
 
 	rabbithole "github.com/michaelklishin/rabbit-hole"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"

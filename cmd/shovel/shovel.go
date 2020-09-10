@@ -7,35 +7,35 @@ import (
 	"github.com/urfave/cli"
 )
 
-func getPolicies(client *rabbithole.Client, vhost string) (*[]rabbithole.Policy, error) {
-	var policies []rabbithole.Policy
+func getShovels(client *rabbithole.Client, vhost string) (*[]rabbithole.ShovelInfo, error) {
+	var shovels []rabbithole.ShovelInfo
 	var err error
 	if len(vhost) > 0 {
-		policies, err = client.ListPoliciesIn(vhost)
+		shovels, err = client.ListShovelsIn(vhost)
 	} else {
-		policies, err = client.ListPolicies()
+		shovels, err = client.ListShovels()
 	}
-	return &policies, err
+	return &shovels, err
 }
 
-func getPolicyName(subject *interface{}) string {
-	p := (*subject).(rabbithole.Policy)
+func getShovelName(subject *interface{}) string {
+	p := (*subject).(rabbithole.ShovelInfo)
 	return p.Name
 }
 
-func executePolicyOperation(ctx *cli.Context, policyActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
+func executeShovelOperation(ctx *cli.Context, shovelActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
 	s := server.AskForServerSelection(ctx.String("server-name"))
 	vhost := ctx.String("vhost")
 
 	client := commons.GetRabbitClient(s)
-	policies, err := getPolicies(client, vhost)
+	shovels, err := getShovels(client, vhost)
 	commons.AbortIfError(err)
 
-	subjects := commons.ConvertToSliceOfInterfaces(*policies)
+	subjects := commons.ConvertToSliceOfInterfaces(*shovels)
 	subjectOperator := commons.SubjectOperator{
-		ExecuteAction: policyActionFn,
-		GetName:       getPolicyName,
-		Type:          "policy",
+		ExecuteAction: shovelActionFn,
+		GetName:       getShovelName,
+		Type:          "shovel",
 		PrintHeader:   printHeaderFn,
 	}
 

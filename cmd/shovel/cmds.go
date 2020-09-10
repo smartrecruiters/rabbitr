@@ -13,17 +13,17 @@ func GetCommands() []cli.Command {
 			Hidden:  false,
 			Subcommands: []cli.Command{
 				{
-					Name: "add",
+					Name: "list",
 					Flags: []cli.Flag{
 						commons.ServerFlag,
 						commons.VHostFlag,
+						commons.GetFilterFlag(commons.AllSubjects, commons.ShovelFilterFields),
 					},
-					Description: "Create shovel in given RabbitMQ server",
-					//Action:      listPoliciesCmd,
+					Description: "Lists shovels on given RabbitMQ server",
+					Action:      listShovelsCmd,
 					Usage: "\n\t" +
-						"rabbitr policies list -s my-server-from-cfg\t# will list all policies defined in my-server-from-cfg\n\t" +
-						"rabbitr policies list -s my-server-from-cfg -f 'policy.Name=~\"Federation\"'\t# will list policies defined on my-server-from-cfg which's name matches the 'Federation' string\n\t" +
-						"rabbitr policies list -s my-server-from-cfg -f 'policy.Priority>8'\t# will list policies defined on my-server-from-cfg with priorities greater than 8\n\t",
+						"rabbitr shovels list -s my-server-from-cfg\t# will list all shovels from my-server-from-cfg\n\t" +
+						"rabbitr shovels list -s my-server-from-cfg -f 'shovel.Name=~\"my-shovel\"'\t# will list shovels from my-server-from-cfg which's name matches the 'my-shovel' string\n\t",
 				},
 			},
 		},

@@ -55,8 +55,9 @@ func GetCommands() []cli.Command {
 					Description: "List all servers defined in configuration",
 					Flags: []cli.Flag{
 						cli.BoolFlag{
-							Name:  "show-passwords",
-							Usage: "Show passwords instead of redacted text",
+							Name:   "show-passwords",
+							Usage:  "Show passwords instead of redacted text",
+							Hidden: true,
 						},
 					},
 					Action: showConfigurationCmd,

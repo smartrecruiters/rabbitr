@@ -13,6 +13,20 @@ func GetCommands() []cli.Command {
 			Hidden:  false,
 			Subcommands: []cli.Command{
 				{
+					Name: "delete",
+					Flags: []cli.Flag{
+						commons.ServerFlag,
+						commons.DryRunFlag,
+						commons.VHostFlag,
+						commons.GetFilterFlag(commons.NoneOfTheSubjects, commons.ShovelFilterFields),
+					},
+					Description: "Deletes shovel on given RabbitMQ server",
+					Action:      deleteCmd,
+					Usage: "\n\t" +
+						"rabbitr shovels delete -s my-server-from-cfg -f \"1==1\"\t# will delete all shovels from my-server-from-cfg\n\t" +
+						"rabbitr shovels delete -s my-server-from-cfg -f 'shovel.Name=~\"my-shovel\"'\t# will delete shovels from my-server-from-cfg which's name matches the 'my-shovel' string\n\t",
+				},
+				{
 					Name: "list",
 					Flags: []cli.Flag{
 						commons.ServerFlag,

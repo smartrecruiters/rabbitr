@@ -1,9 +1,52 @@
 # Build customization
+project_name: rabbitr
 builds:
   - binary: rabbitr
     goos:
-      - windows
       - darwin
       - linux
     goarch:
       - amd64
+brews:
+  -
+    # Github repository to push the tap to.
+    github:
+      owner: smartrecruiters
+      name: homebrew-taps
+
+    # Allows you to set a custom download strategy. Note that you'll need
+    # to implement the strategy and add it to your tap repository.
+    # Example: http://lessthanhero.io/post/homebrew-with-private-repo-releases/
+    # Default is empty.
+    download_strategy: CustomGitHubPrivateRepositoryReleaseDownloadStrategy
+
+    # Allows you to add a custom require_relative at the top of the formula template
+    # Default is empty
+    custom_require: ./lib/custom_download_strategies.rb
+
+    # Git author used to commit to the repository.
+    # Defaults are shown.
+    commit_author:
+      name: CoreTeam
+      email: core@smartrecruiters.com
+
+    # Your app's homepage.
+    # Default is empty.
+    homepage: "https://github.com/smartrecruiters/rabbitr"
+
+    # Your app's description.
+    # Default is empty.
+    description: "rabbitr - CLI tool for RabbitMQ management"
+
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user.
+    # If set to auto, the release will not be uploaded to the homebrew tap
+    # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+    # Default is false.
+    skip_upload: false
+
+    # Custom install script for brew.
+    # Default is 'bin.install "program"'.
+    install: |
+      bin.install "rabbitr"

@@ -1,7 +1,7 @@
 package exchange
 
 import (
-	rabbithole "github.com/michaelklishin/rabbit-hole"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 	"github.com/smartrecruiters/rabbitr/cmd/server"
 	"github.com/urfave/cli"

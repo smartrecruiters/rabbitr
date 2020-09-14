@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 )
 
 func GetRabbitClient(serverName string) *rabbithole.Client {

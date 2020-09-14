@@ -9,9 +9,9 @@ import (
 	"github.com/urfave/cli"
 
 	"github.com/Knetic/govaluate"
-	rabbithole "github.com/michaelklishin/rabbit-hole"
-	"github.com/vbauerster/mpb"
-	"github.com/vbauerster/mpb/decor"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	"github.com/vbauerster/mpb/v5"
+	"github.com/vbauerster/mpb/v5/decor"
 )
 
 type SubjectOperator struct {

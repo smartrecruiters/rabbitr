@@ -6,7 +6,7 @@ import (
 
 	"github.com/urfave/cli"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 )
 
 func printListPoliciesHeaderFn(w *tabwriter.Writer) {

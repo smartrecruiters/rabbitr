@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"text/tabwriter"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 	"github.com/urfave/cli"
 )

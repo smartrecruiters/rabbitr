@@ -20,5 +20,5 @@ func printListShovelsHeaderFn(w *tabwriter.Writer) {
 
 func listShovelFn(client *rabbithole.Client, shovel *interface{}, w *tabwriter.Writer) {
 	s := (*shovel).(rabbithole.ShovelInfo)
-	fmt.Fprintf(w, "%s/%s \t%v\t", s.Vhost, s.Name, s.Definition)
+	fmt.Fprintf(w, "%s/%s \t%v+\t", s.Vhost, s.Name, s.Definition)
 }

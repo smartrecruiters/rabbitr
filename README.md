@@ -13,6 +13,7 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
      - [x] sync 
      - [x] delete
      - [x] move
+     - [x] duplicate
  - exchange  
      - [x] list
      - [x] delete
@@ -21,6 +22,7 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
      - [x] delete
      - [x] list
  - shovels     
+     - [x] delete
      - [x] list
  - policies     
      - [x] list
@@ -64,6 +66,5 @@ It allows for creating flexible conditions considering for example only queues w
 Check command descriptions for a list of properties available for use on given resource type.     
 
 ## TODO Ideas
-- duplicate queue - move messages from a single queue through the exchange to the two newly created queues, in effect multiplying the messages 
 - move messages from one queue to the other and strip some headers on the way
-- dump messages from a queue to a file (may be tricky as messages can have various content)
+- dump messages from a queue to a file

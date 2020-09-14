@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"gopkg.in/AlecAivazis/survey.v2"
@@ -51,6 +52,26 @@ func AskIfValueEmpty(value, name string) string {
 		return value
 	}
 	return strings.TrimSpace(AskWithValidator(value, name, NotEmptyValidator))
+}
+
+func AskForIntIf(testFn func(int) bool, value int, msg string) int {
+	if !testFn(value) {
+		return value
+	}
+	prompt := &survey.Input{
+		Message: fmt.Sprintf("Please provide %s", msg),
+	}
+	customIntValidator := func(value interface{}) error {
+		i, err := strconv.Atoi(value.(string))
+		if err != nil || testFn(i) {
+			return errors.New("please provide valid value")
+		}
+		return nil
+	}
+
+	err := survey.AskOne(prompt, &value, survey.WithValidator(customIntValidator))
+	AbortIfError(err)
+	return value
 }
 
 func AskForPasswordIfEmpty(value, name string) string {

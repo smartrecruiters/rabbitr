@@ -46,6 +46,21 @@ func GetCommands() []cli.Command {
 						"rabbitr queues delete -s my-server-from-cfg -f 'queue.Consumers==0'\t# will delete queues from to my-server-from-cfg that have 0 consumers\n\t",
 				},
 				{
+					Name: "duplicate",
+					Flags: []cli.Flag{
+						commons.ServerFlag,
+						commons.VHostFlag,
+						cli.StringFlag{
+							Name:  "queue, q",
+							Usage: "Source queue",
+						},
+					},
+					Description: "Moves messages from a source queue to the two separate queues. Messages will be duplicated in newly created queues and removed from the source queue.",
+					Action:      duplicateCmd,
+					Usage: "\n\t" +
+						"rabbitr queues duplicate -s my-server-from-cfg -q my-queue \t# will duplicate and move messages from source queue to the two newly created queues\n\t",
+				},
+				{
 					Name: "purge",
 					Flags: []cli.Flag{
 						commons.ServerFlag,

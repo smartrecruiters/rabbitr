@@ -9,11 +9,11 @@ onNode {
     inDocker(image: 'sr-golang:3.1.0', srRegistry: true, params: "-v $WORKSPACE:$projectPath") {
         stage('Build') {
             // change to dir when JENKINS-33510 fixed
-            sh "cd $projectPath; make install; make buildall"
+            sh "cd $projectPath; make install; make build"
         }
 
         stage('Test') {
-            sh "cd $projectPath; make testall "
+            sh "cd $projectPath; make test"
         }
     }
 }

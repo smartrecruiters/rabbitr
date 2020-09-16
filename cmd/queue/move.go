@@ -12,7 +12,7 @@ import (
 )
 
 func moveMessagesCmd(ctx *cli.Context) error {
-	s := server.AskForServerSelection(ctx.String("server-name"))
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
 	srcVHost := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("src-vhost")), "src-vhost")
 	srcQueue := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("src-queue")), "src-queue")
 	dstQueue := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("dst-queue")), "dst-queue")

@@ -14,8 +14,8 @@ import (
 )
 
 func duplicateCmd(ctx *cli.Context) error {
-	s := server.AskForServerSelection(ctx.String("server-name"))
-	srcVHost := strings.TrimSpace(ctx.String("vhost"))
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	srcVHost := strings.TrimSpace(ctx.String(commons.VHost))
 	srcQueue := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("queue")), "queue")
 
 	id := uuid.New().String()

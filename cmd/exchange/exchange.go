@@ -24,8 +24,8 @@ func getExchangeName(subject *interface{}) string {
 }
 
 func executeExchangeOperation(ctx *cli.Context, exchangeActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
-	s := server.AskForServerSelection(ctx.String("server-name"))
-	vhost := ctx.String("vhost")
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	vhost := ctx.String(commons.VHost)
 
 	client := commons.GetRabbitClient(s)
 	exchanges, err := getExchanges(client, vhost)

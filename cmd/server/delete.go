@@ -9,7 +9,7 @@ import (
 )
 
 func deleteServerConfigCmd(ctx *cli.Context) {
-	serverCfgToRemove := AskForServerSelection(ctx.String("server-name"))
+	serverCfgToRemove := AskForServerSelection(ctx.String(commons.ServerName))
 
 	cfg, err := commons.GetApplicationConfig()
 	commons.AbortIfError(err)

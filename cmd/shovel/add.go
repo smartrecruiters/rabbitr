@@ -9,8 +9,8 @@ import (
 )
 
 func addShovelCmd(ctx *cli.Context) {
-	server := ctx.String("server-name")
-	vhost := ctx.String("vhost")
+	server := ctx.String(commons.ServerName)
+	vhost := ctx.String(commons.VHost)
 	shovel := ctx.String("shovel")
 	client := commons.GetRabbitClient(server)
 	definition := rabbithole.ShovelDefinition{

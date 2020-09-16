@@ -24,8 +24,8 @@ func getShovelName(subject *interface{}) string {
 }
 
 func executeShovelOperation(ctx *cli.Context, shovelActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
-	s := server.AskForServerSelection(ctx.String("server-name"))
-	vhost := ctx.String("vhost")
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	vhost := ctx.String(commons.VHost)
 
 	client := commons.GetRabbitClient(s)
 	shovels, err := getShovels(client, vhost)

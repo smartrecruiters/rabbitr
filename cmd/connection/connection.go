@@ -34,8 +34,8 @@ func getConnectionName(subject *interface{}) string {
 }
 
 func executeConnectionOperation(ctx *cli.Context, connectionActionFn commons.SubjectActionFn, headerPrinterFn commons.HeaderPrinterFn) {
-	s := server.AskForServerSelection(ctx.String("server-name"))
-	vhost := ctx.String("vhost")
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	vhost := ctx.String(commons.VHost)
 
 	client := commons.GetRabbitClient(s)
 	queues, err := getConnections(client, vhost)

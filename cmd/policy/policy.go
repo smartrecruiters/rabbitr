@@ -24,8 +24,8 @@ func getPolicyName(subject *interface{}) string {
 }
 
 func executePolicyOperation(ctx *cli.Context, policyActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
-	s := server.AskForServerSelection(ctx.String("server-name"))
-	vhost := ctx.String("vhost")
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	vhost := ctx.String(commons.VHost)
 
 	client := commons.GetRabbitClient(s)
 	policies, err := getPolicies(client, vhost)

@@ -29,11 +29,6 @@ func Index(vs []string, t string) int {
 }
 
 // Returns true if the target string t is in the slice.
-func Include(vs []string, t string) bool {
-	return Index(vs, t) >= 0
-}
-
-// Returns true if the target string t is in the slice.
 func Contains(vs []string, t string) bool {
-	return Include(vs, t)
+	return Index(vs, t) >= 0
 }

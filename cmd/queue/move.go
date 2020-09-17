@@ -1,7 +1,6 @@
 package queue
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/smartrecruiters/rabbitr/cmd/server"
@@ -36,10 +35,7 @@ func moveMessagesCmd(ctx *cli.Context) error {
 
 	client := commons.GetRabbitClient(s)
 	res, err := client.DeclareShovel(srcVHost, name, definition)
-	if res != nil {
-		fmt.Printf("Creating temporary shovel to move messages, Response code: %d\t\n", res.StatusCode)
-		commons.PrintResponseBodyIfError(res)
-	}
+	commons.HandleGeneralResponse("Creating temporary shovel to move messages", res)
 	commons.AbortIfError(err)
 	return nil
 }

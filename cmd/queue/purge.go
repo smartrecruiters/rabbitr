@@ -17,11 +17,8 @@ func purgeCmd(ctx *cli.Context) error {
 
 func purgeQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.Writer) {
 	q := (*queue).(rabbithole.QueueInfo)
-	fmt.Fprintf(w, "Purging queue: %s/%s from %d messages\t", q.Vhost, q.Name, q.Messages)
+	commons.Fprintf(w, "Purging queue: %s/%s from %d messages\t", q.Vhost, q.Name, q.Messages)
 	res, err := client.PurgeQueue(q.Vhost, q.Name)
-	commons.PrintIfErrorWithMsg(fmt.Sprintf("Error occured when attempting to purge queue %s/%s", q.Vhost, q.Name), err)
-	if res != nil {
-		fmt.Fprintf(w, "Response code: %d\t", res.StatusCode)
-		commons.PrintResponseBodyIfError(res)
-	}
+	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occured when attempting to purge queue %s/%s", q.Vhost, q.Name), err)
+	commons.HandleGeneralResponseWithWriter(w, res)
 }

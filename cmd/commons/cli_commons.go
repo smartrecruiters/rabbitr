@@ -12,11 +12,13 @@ import (
 	"github.com/urfave/cli"
 )
 
-const AllSubjects = "1==1"
-const NoneOfTheSubjects = "1!=1"
-const QueueFilterFields = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
-const ExchangeFilterFields = "exchange.Name/Vhost/Type/Durable/AutoDelete/Internal/Arguments (a map with string keys)"
-const ShovelFilterFields = "shovel.Name/Vhost"
+const (
+	AllSubjects          = "1==1"
+	NoneOfTheSubjects    = "1!=1"
+	QueueFilterFields    = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
+	ExchangeFilterFields = "exchange.Name/Vhost/Type/Durable/AutoDelete/Internal/Arguments (a map with string keys)"
+	ShovelFilterFields   = "shovel.Name/Vhost"
+)
 
 var ServerFlag cli.StringFlag
 var DryRunFlag cli.BoolFlag

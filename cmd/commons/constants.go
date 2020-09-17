@@ -2,6 +2,6 @@ package commons
 
 const (
 	ApplicationName = "rabbitr"
-	ServerName = "server-name"
-	VHost = "vhost"
+	ServerName      = "server-name"
+	VHost           = "vhost"
 )

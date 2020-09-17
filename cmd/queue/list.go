@@ -1,8 +1,9 @@
 package queue
 
 import (
-	"fmt"
 	"text/tabwriter"
+
+	"github.com/smartrecruiters/rabbitr/cmd/commons"
 
 	"github.com/urfave/cli"
 
@@ -15,13 +16,13 @@ func listQueuesCmd(ctx *cli.Context) error {
 }
 
 func printListQueuesHeaderFn(w *tabwriter.Writer) {
-	_, _ = fmt.Fprintln(w, "Queue\tConsumers\tMessages\tOwner\t")
+	commons.Fprintln(w, "Queue\tConsumers\tMessages\tOwner\t")
 }
 
 func listQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.Writer) {
 	q := (*queue).(rabbithole.QueueInfo)
 	owner := getQueueOwner(q)
-	fmt.Fprintf(w, "%s/%s \t%d\t%d\t%s\t", q.Vhost, q.Name, q.Consumers, q.Messages, owner)
+	commons.Fprintf(w, "%s/%s \t%d\t%d\t%s\t", q.Vhost, q.Name, q.Consumers, q.Messages, owner)
 }
 
 func getQueueOwner(q rabbithole.QueueInfo) string {

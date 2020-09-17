@@ -2,8 +2,6 @@
 github.com/AlecAivazis/survey/v2
 github.com/AlecAivazis/survey/v2/core
 github.com/AlecAivazis/survey/v2/terminal
-# github.com/Knetic/govaluate v3.0.0+incompatible
-github.com/Knetic/govaluate
 # github.com/VividCortex/ewma v1.1.1
 github.com/VividCortex/ewma
 # github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d
@@ -24,8 +22,6 @@ github.com/mattn/go-isatty
 github.com/mattn/go-runewidth
 # github.com/mgutz/ansi v0.0.0-20170206155736-9520e82c474b
 github.com/mgutz/ansi
-# github.com/michaelklishin/rabbit-hole v1.5.0
-github.com/michaelklishin/rabbit-hole
 # github.com/michaelklishin/rabbit-hole/v2 v2.4.0
 github.com/michaelklishin/rabbit-hole/v2
 # github.com/russross/blackfriday/v2 v2.0.1
@@ -48,3 +44,5 @@ golang.org/x/sys/windows
 # golang.org/x/text v0.3.2
 golang.org/x/text/transform
 golang.org/x/text/width
+# gopkg.in/Knetic/govaluate.v2 v2.3.0
+gopkg.in/Knetic/govaluate.v2

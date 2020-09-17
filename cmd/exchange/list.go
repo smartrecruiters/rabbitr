@@ -1,8 +1,9 @@
 package exchange
 
 import (
-	"fmt"
 	"text/tabwriter"
+
+	"github.com/smartrecruiters/rabbitr/cmd/commons"
 
 	"github.com/urfave/cli"
 
@@ -15,10 +16,10 @@ func listExchangesCmd(ctx *cli.Context) error {
 }
 
 func printListExchangesHeaderFn(w *tabwriter.Writer) {
-	_, _ = fmt.Fprintln(w, "Exchange\tDurable\tAutoDelete\tInternal\t")
+	commons.Fprintln(w, "Exchange\tDurable\tAutoDelete\tInternal\t")
 }
 
 func listExchangeFn(client *rabbithole.Client, exchange *interface{}, w *tabwriter.Writer) {
 	e := (*exchange).(rabbithole.ExchangeInfo)
-	fmt.Fprintf(w, "%s/%s \t%v\t%v\t%v\t", e.Vhost, e.Name, e.Durable, e.AutoDelete, e.Internal)
+	commons.Fprintf(w, "%s/%s \t%v\t%v\t%v\t", e.Vhost, e.Name, e.Durable, e.AutoDelete, e.Internal)
 }

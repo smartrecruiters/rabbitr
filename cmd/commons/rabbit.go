@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"text/tabwriter"
 
 	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 )
@@ -26,11 +27,30 @@ func GetRabbitClient(serverName string) *rabbithole.Client {
 	return client
 }
 
-func PrintResponseBodyIfError(res *http.Response) {
-	if res != nil && res.StatusCode >= 400 {
-		buf := new(strings.Builder)
-		_, err := io.Copy(buf, res.Body)
-		PrintIfError(err)
-		fmt.Println(buf.String())
+func HandleGeneralResponse(messagePrefix string, res *http.Response) {
+	if res == nil {
+		return
 	}
+	Fprintf(os.Stdout, messagePrefix+", Response code: %d\t\n", res.StatusCode)
+	PrintResponseBodyToWriterIfError(os.Stdout, res)
+}
+
+func HandleGeneralResponseWithWriter(w *tabwriter.Writer, res *http.Response) {
+	if res == nil {
+		return
+	}
+	Fprintf(w, "Response code: %d\t", res.StatusCode)
+	PrintResponseBodyToWriterIfError(w, res)
+}
+
+func PrintResponseBodyToWriterIfError(w io.Writer, res *http.Response) {
+	if res == nil || res.StatusCode < 400 {
+		return
+	}
+	buf := new(strings.Builder)
+	_, err := io.Copy(buf, res.Body)
+	if err != nil {
+		Fprintf(w, err.Error())
+	}
+	Fprintf(w, buf.String())
 }

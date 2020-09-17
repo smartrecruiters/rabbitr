@@ -6,10 +6,9 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/urfave/cli"
-
 	"github.com/Knetic/govaluate"
 	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	"github.com/urfave/cli"
 	"github.com/vbauerster/mpb/v5"
 	"github.com/vbauerster/mpb/v5/decor"
 )
@@ -53,7 +52,7 @@ func ExecuteOperation(ctx *cli.Context, client *rabbithole.Client, subjects *[]i
 
 		if subjectMatches.(bool) {
 			if dryRun {
-				fmt.Fprintf(w, "Skipping %s operation: %s in dry-run mode\n", subjectOperator.Type, subjectOperator.GetName(&subject))
+				Fprintf(w, "Skipping %s operation: %s in dry-run mode\n", subjectOperator.Type, subjectOperator.GetName(&subject))
 				bar.Increment()
 				bar.DecoratorEwmaUpdate(time.Since(start))
 				continue
@@ -61,7 +60,7 @@ func ExecuteOperation(ctx *cli.Context, client *rabbithole.Client, subjects *[]i
 			matchingSubjectsCount++
 			subjectOperator.ExecuteAction(client, &subject, w)
 
-			fmt.Fprintln(w)
+			Fprintln(w)
 		}
 		bar.Increment()
 		// since ewma decorator is used, we need to pass time.Since(start)

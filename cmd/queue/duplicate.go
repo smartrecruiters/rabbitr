@@ -41,8 +41,8 @@ func declareExchange(client *rabbithole.Client, srcVHost string, dstExchange str
 		Durable:    false,
 		AutoDelete: true,
 	})
-	commons.AbortIfErrorWithMsg(fmt.Sprintf("Unable to create %s/%s exchange", srcVHost, dstExchange), err)
 	commons.HandleGeneralResponse(fmt.Sprintf("Creating %s/%s exchange", srcVHost, dstExchange), res)
+	commons.AbortIfErrorWithMsg(fmt.Sprintf("Unable to create %s/%s exchange", srcVHost, dstExchange), err)
 }
 
 func declareQueue(client *rabbithole.Client, srcVHost string, queueName string) {
@@ -51,8 +51,8 @@ func declareQueue(client *rabbithole.Client, srcVHost string, queueName string) 
 		AutoDelete: false,
 		Arguments:  nil,
 	})
-	commons.AbortIfErrorWithMsg(fmt.Sprintf("Unable to create queue %s/%s queue", srcVHost, queueName), err)
 	commons.HandleGeneralResponse(fmt.Sprintf("Creating %s/%s queue", srcVHost, queueName), res)
+	commons.AbortIfErrorWithMsg(fmt.Sprintf("Unable to create queue %s/%s queue", srcVHost, queueName), err)
 }
 
 func declareBindingForQueue(client *rabbithole.Client, srcVHost string, dstExchange string, queueName string) {
@@ -62,8 +62,8 @@ func declareBindingForQueue(client *rabbithole.Client, srcVHost string, dstExcha
 		Destination:     queueName,
 		DestinationType: "queue",
 	})
-	commons.AbortIfErrorWithMsg(fmt.Sprintf("Unable to create binding between exchange %s/%s and queue %s/%s queue", srcVHost, dstExchange, srcVHost, queueName), err)
 	commons.HandleGeneralResponse(fmt.Sprintf("Creating binding for %s/%s queue", srcVHost, queueName), res)
+	commons.AbortIfErrorWithMsg(fmt.Sprintf("Unable to create binding between exchange %s/%s and queue %s/%s queue", srcVHost, dstExchange, srcVHost, queueName), err)
 }
 
 func declareShovel(client *rabbithole.Client, srcVHost string, srcQueue string, dstExchange string, shovelName string) {

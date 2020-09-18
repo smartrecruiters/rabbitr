@@ -27,6 +27,17 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
  - policies     
      - [x] list
  
+## Installation
+
+#### Making sure the environment is set
+`export HOMEBREW_GITHUB_API_TOKEN=<MY_GITHUB_TOKEN>`
+
+#### Tapping the repo
+`brew tap smartrecruiters/homebrew-taps`
+
+#### Installing!
+`brew update && brew install rabbitr`
+ 
 ## Configuration
 After downloading or building the source code `rabbitr` application needs to be configured with coordinates to 
 RabbitMQ servers that it will operate on. It uses REST API when communicating with RabbitMQ server. 
@@ -46,19 +57,12 @@ Example commands:
 
 ```
 rabbitr server add -s my-server-name -api-url http://localhost:15672 -u user -p pass
-
 rabbitr queues list -s my-server-name
-
 rabbitr queues sync -s my-server-name
-
 rabbitr queues list -s my-server-name --filter="queue.Consumers==0"
-
 rabbitr queues list -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
-
 rabbitr queues purge -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
-
 rabbitr messages move -s my-server-name --src-vhost vhost1 --src-queue test-queue --duplicate"
-
 ```
 
 ## Advanced filtering

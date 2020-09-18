@@ -92,6 +92,9 @@ func AskForPasswordIfEmpty(value, name string) string {
 
 func AskWithValidator(value, name string, validator survey.Validator) string {
 	value = strings.TrimSpace(value)
+	if validator(value) == nil {
+		return value
+	}
 	prompt := &survey.Input{
 		Message: fmt.Sprintf("Please provide %s", name),
 	}
@@ -110,7 +113,7 @@ func NotEmptyValidator(value interface{}) error {
 
 func IsUrl(str string) bool {
 	u, err := url.Parse(str)
-	return err == nil && u.Scheme != "" && u.Host != ""
+	return err == nil && u.Host != "" && (u.Scheme == "http" || u.Scheme == "https")
 }
 
 func IsUrlValidator(value interface{}) error {

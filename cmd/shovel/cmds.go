@@ -8,9 +8,10 @@ import (
 func GetCommands() []cli.Command {
 	return []cli.Command{
 		{
-			Name:    "shovel",
-			Aliases: []string{"shovels"},
-			Hidden:  false,
+			Name:        "shovel",
+			Aliases:     []string{"shovels"},
+			Hidden:      false,
+			Description: "Group of commands related to shovels",
 			Subcommands: []cli.Command{
 				{
 					Name: "delete",

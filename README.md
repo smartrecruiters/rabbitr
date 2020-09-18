@@ -7,13 +7,13 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
  - connections
      - [x] list
      - [x] close
+ - messages
+     - [x] move
  - queue  
      - [x] list
      - [x] purge  
      - [x] sync 
      - [x] delete
-     - [x] move
-     - [x] duplicate
  - exchange  
      - [x] list
      - [x] delete
@@ -34,11 +34,13 @@ To add server configuration invoke:
 
 `rabbitr server add -s my-server-name -api-url http://localhost:15672 -u user -p pass`
 
-After server has been configured it can be used in context of other commands such as `queues`
+After the server has been configured it can be used in context of other commands such as `queues`
 
 ## Usage
 Each command comes with a description and examples. Start with `rabbitr -h` to check all the commands. 
 Lower level commands provide their own usage, for example `rabbitr queues -h` or `rabbitr queues list -h`
+
+!["Example flow"](rabbitr-demo.gif)
 
 Example commands:
 
@@ -55,7 +57,7 @@ rabbitr queues list -s my-server-name --filter="queue.Consumers==0 && queue.Mess
 
 rabbitr queues purge -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
 
-rabbitr queue move -s my-server-name --src-vhost vhost1 --src-queue test-queue --dst-vhost vhost2 --dst-queue new-destination-queue"
+rabbitr messages move -s my-server-name --src-vhost vhost1 --src-queue test-queue --duplicate"
 
 ```
 

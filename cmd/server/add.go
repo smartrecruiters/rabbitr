@@ -11,7 +11,7 @@ import (
 
 func addServerCmd(ctx *cli.Context) {
 	serverName := commons.AskIfValueEmpty(ctx.String(commons.ServerName), commons.ServerName)
-	apiUrl := commons.AskWithValidator(ctx.String("url"), "API url (for example: https://localhost:15672)", commons.IsUrlValidator)
+	apiUrl := commons.AskWithValidator(ctx.String("api-url"), "API url (for example: https://localhost:15672)", commons.IsUrlValidator)
 	username := commons.AskIfValueEmpty(ctx.String("username"), "username")
 	password := commons.AskForPasswordIfEmpty(ctx.String("password"), "password")
 

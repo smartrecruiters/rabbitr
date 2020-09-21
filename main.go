@@ -4,11 +4,15 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/smartrecruiters/rabbitr/cmd/message"
+
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 	"github.com/smartrecruiters/rabbitr/cmd/connection"
+	"github.com/smartrecruiters/rabbitr/cmd/exchange"
 	"github.com/smartrecruiters/rabbitr/cmd/policy"
 	"github.com/smartrecruiters/rabbitr/cmd/queue"
 	"github.com/smartrecruiters/rabbitr/cmd/server"
+	"github.com/smartrecruiters/rabbitr/cmd/shovel"
 	"github.com/urfave/cli"
 )
 
@@ -33,9 +37,12 @@ func main() {
 	app.Usage = applicationDescription
 	app.Version = versionString()
 	app.Commands = connection.GetCommands()
+	app.Commands = append(app.Commands, exchange.GetCommands()...)
+	app.Commands = append(app.Commands, message.GetCommands()...)
+	app.Commands = append(app.Commands, policy.GetCommands()...)
 	app.Commands = append(app.Commands, queue.GetCommands()...)
 	app.Commands = append(app.Commands, server.GetCommands()...)
-	app.Commands = append(app.Commands, policy.GetCommands()...)
+	app.Commands = append(app.Commands, shovel.GetCommands()...)
 
 	cli.AppHelpTemplate = commons.GetAppHelpTemplate()
 	cli.CommandHelpTemplate = commons.GetCommandHelpTemplate()

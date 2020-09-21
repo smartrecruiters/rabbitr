@@ -1,8 +1,9 @@
 package connection
 
 import (
-	rabbithole "github.com/michaelklishin/rabbit-hole"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
+	"github.com/smartrecruiters/rabbitr/cmd/server"
 	"github.com/urfave/cli"
 )
 
@@ -18,13 +19,12 @@ func getConnections(client *rabbithole.Client, vhost string) (*[]ConnectionInfo,
 	for _, connection := range connections {
 		clientProvidedName := connection.ClientProperties["connection_name"]
 		if clientProvidedName == nil {
-			clientProvidedName = "unknown"
+			clientProvidedName = "not-defined"
 		}
 		if len(vhost) <= 0 || vhost == connection.Vhost {
 			connectionInfos = append(connectionInfos, ConnectionInfo{ID: connection.Name, Name: clientProvidedName.(string), Vhost: connection.Vhost})
 		}
 	}
-	commons.AbortIfError(err)
 	return &connectionInfos, err
 }
 
@@ -34,10 +34,10 @@ func getConnectionName(subject *interface{}) string {
 }
 
 func executeConnectionOperation(ctx *cli.Context, connectionActionFn commons.SubjectActionFn, headerPrinterFn commons.HeaderPrinterFn) {
-	server := ctx.String("server-name")
-	vhost := ctx.String("vhost")
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	vhost := ctx.String(commons.VHost)
 
-	client := commons.GetRabbitClient(server)
+	client := commons.GetRabbitClient(s)
 	queues, err := getConnections(client, vhost)
 	commons.AbortIfError(err)
 

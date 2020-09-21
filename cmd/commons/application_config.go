@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"sort"
 	"sync"
 )
 
@@ -18,6 +19,16 @@ type ServerCoordinates struct {
 
 type Config struct {
 	Servers map[string]ServerCoordinates `json:"servers"`
+}
+
+func (cfg *Config) GetServerNames() []string {
+	i, serverNames := 0, make([]string, len(cfg.Servers))
+	for k := range cfg.Servers {
+		serverNames[i] = k
+		i++
+	}
+	sort.Strings(serverNames)
+	return serverNames
 }
 
 var cachedConfig *Config

@@ -1,8 +1,9 @@
 package queue
 
 import (
-	rabbithole "github.com/michaelklishin/rabbit-hole"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
+	"github.com/smartrecruiters/rabbitr/cmd/server"
 	"github.com/urfave/cli"
 )
 
@@ -14,7 +15,6 @@ func getQueues(client *rabbithole.Client, vhost string) (*[]rabbithole.QueueInfo
 	} else {
 		queues, err = client.ListQueues()
 	}
-	commons.AbortIfError(err)
 	return &queues, err
 }
 
@@ -24,10 +24,10 @@ func getQueueName(subject *interface{}) string {
 }
 
 func executeQueueOperation(ctx *cli.Context, queueActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
-	server := ctx.String("server-name")
-	vhost := ctx.String("vhost")
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	vhost := ctx.String(commons.VHost)
 
-	client := commons.GetRabbitClient(server)
+	client := commons.GetRabbitClient(s)
 	queues, err := getQueues(client, vhost)
 	commons.AbortIfError(err)
 

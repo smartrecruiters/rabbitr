@@ -6,12 +6,11 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/urfave/cli"
-
 	"github.com/Knetic/govaluate"
-	rabbithole "github.com/michaelklishin/rabbit-hole"
-	"github.com/vbauerster/mpb"
-	"github.com/vbauerster/mpb/decor"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	"github.com/urfave/cli"
+	"github.com/vbauerster/mpb/v5"
+	"github.com/vbauerster/mpb/v5/decor"
 )
 
 type SubjectOperator struct {
@@ -30,7 +29,12 @@ func ExecuteOperation(ctx *cli.Context, client *rabbithole.Client, subjects *[]i
 	filter := ctx.String("filter")
 	dryRun := ctx.Bool("dry-run")
 
-	matchExpression, err := govaluate.NewEvaluableExpression(filter)
+	if len(*subjects) <= 0 {
+		fmt.Println("No subjects found to act upon.")
+		return
+	}
+
+	matchExpression, err := govaluate.NewEvaluableExpressionWithFunctions(filter, GetCustomFilterFunctions())
 	AbortIfError(err)
 	p, bar := initializeProgressBar(subjects)
 
@@ -48,18 +52,19 @@ func ExecuteOperation(ctx *cli.Context, client *rabbithole.Client, subjects *[]i
 
 		if subjectMatches.(bool) {
 			if dryRun {
-				//fmt.Fprintf(w, "Skipping %s operation: %s/%s in dry-run mode\n", subjectName, subject.Vhost, subject.Name)
-				fmt.Fprintf(w, "Skipping %s operation: %s in dry-run mode\n", subjectOperator.Type, subjectOperator.GetName(&subject))
-				bar.Increment(time.Since(start))
+				Fprintf(w, "Skipping %s operation: %s in dry-run mode\n", subjectOperator.Type, subjectOperator.GetName(&subject))
+				bar.Increment()
+				bar.DecoratorEwmaUpdate(time.Since(start))
 				continue
 			}
 			matchingSubjectsCount++
 			subjectOperator.ExecuteAction(client, &subject, w)
 
-			fmt.Fprintln(w)
+			Fprintln(w)
 		}
+		bar.Increment()
 		// since ewma decorator is used, we need to pass time.Since(start)
-		bar.Increment(time.Since(start))
+		bar.DecoratorEwmaUpdate(time.Since(start))
 	}
 
 	// wait for our bar to complete and flush
@@ -86,7 +91,6 @@ func initializeProgressBar(subjects *[]interface{}) (*mpb.Progress, *mpb.Bar) {
 			),
 		),
 		mpb.AppendDecorators(decor.Percentage()),
-		mpb.BarClearOnComplete(),
 		mpb.BarRemoveOnComplete(),
 	)
 	return p, bar

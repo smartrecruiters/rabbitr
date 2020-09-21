@@ -1,41 +1,41 @@
 package shovel
 
 import (
-	rabbithole "github.com/michaelklishin/rabbit-hole"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
+	"github.com/smartrecruiters/rabbitr/cmd/server"
 	"github.com/urfave/cli"
 )
 
-func getPolicies(client *rabbithole.Client, vhost string) (*[]rabbithole.Policy, error) {
-	var policies []rabbithole.Policy
+func getShovels(client *rabbithole.Client, vhost string) (*[]rabbithole.ShovelInfo, error) {
+	var shovels []rabbithole.ShovelInfo
 	var err error
 	if len(vhost) > 0 {
-		policies, err = client.ListPoliciesIn(vhost)
+		shovels, err = client.ListShovelsIn(vhost)
 	} else {
-		policies, err = client.ListPolicies()
+		shovels, err = client.ListShovels()
 	}
-	commons.AbortIfError(err)
-	return &policies, err
+	return &shovels, err
 }
 
-func getPolicyName(subject *interface{}) string {
-	p := (*subject).(rabbithole.Policy)
+func getShovelName(subject *interface{}) string {
+	p := (*subject).(rabbithole.ShovelInfo)
 	return p.Name
 }
 
-func executePolicyOperation(ctx *cli.Context, policyActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
-	server := ctx.String("server-name")
-	vhost := ctx.String("vhost")
+func executeShovelOperation(ctx *cli.Context, shovelActionFn commons.SubjectActionFn, printHeaderFn commons.HeaderPrinterFn) {
+	s := server.AskForServerSelection(ctx.String(commons.ServerName))
+	vhost := ctx.String(commons.VHost)
 
-	client := commons.GetRabbitClient(server)
-	policies, err := getPolicies(client, vhost)
+	client := commons.GetRabbitClient(s)
+	shovels, err := getShovels(client, vhost)
 	commons.AbortIfError(err)
 
-	subjects := commons.ConvertToSliceOfInterfaces(*policies)
+	subjects := commons.ConvertToSliceOfInterfaces(*shovels)
 	subjectOperator := commons.SubjectOperator{
-		ExecuteAction: policyActionFn,
-		GetName:       getPolicyName,
-		Type:          "policy",
+		ExecuteAction: shovelActionFn,
+		GetName:       getShovelName,
+		Type:          "shovel",
 		PrintHeader:   printHeaderFn,
 	}
 

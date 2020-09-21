@@ -8,9 +8,10 @@ import (
 func GetCommands() []cli.Command {
 	return []cli.Command{
 		{
-			Name:    "server",
-			Aliases: []string{"servers"},
-			Hidden:  false,
+			Name:        "server",
+			Aliases:     []string{"servers"},
+			Hidden:      false,
+			Description: "Group of commands related to servers",
 			Subcommands: []cli.Command{
 				{
 					Name:    "add",
@@ -19,7 +20,7 @@ func GetCommands() []cli.Command {
 						commons.ServerFlag,
 						cli.StringFlag{
 							Name:  "api-url, url",
-							Value: "http://localhost:15672",
+							Value: "",
 							Usage: "Required. RabbitMQ api url",
 						},
 						cli.StringFlag{
@@ -55,8 +56,9 @@ func GetCommands() []cli.Command {
 					Description: "List all servers defined in configuration",
 					Flags: []cli.Flag{
 						cli.BoolFlag{
-							Name:  "show-passwords",
-							Usage: "Show passwords instead of redacted text",
+							Name:   "show-passwords",
+							Usage:  "Show passwords instead of redacted text",
+							Hidden: true,
 						},
 					},
 					Action: showConfigurationCmd,

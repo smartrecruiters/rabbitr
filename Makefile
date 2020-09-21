@@ -1,38 +1,35 @@
+FILES := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
+
 APP_NAME=rabbitr
-VERSION=1.0.0
+VERSION=1.1.0
 
-.DEFAULT_GOAL: all
+.PHONY: all test build fmt install release
 
-.PHONY: all test build fmt install lint install-lint ci
-
-all: install fmt build test lint
+all: install fmt build test
 
 install:
 	@echo "Installing dependencies"
-	go get -v -t ./...
+	go get -v ./...
 
 fmt:
 	@echo "Formating source code"
-	goimports -l -w .
-
-install-lint:
-	@echo "Installing golinter"
-	go get -u golang.org/x/lint/golint
-
-lint:
-	@echo "Skipping execution of golint for now"
-	#golint cmd/...
+	@goimports -l -w $(FILES)
 
 test:
 	@echo "Running tests"
 	go test -v ./... && echo "TESTS PASSED"
 
-ci: build test lint
-
-build:
+build: test
 	@echo "Building sources"
 	go build -v ./...
 
-release: fmt build test lint
-	@echo $(VERSION)
-	./release.sh $(VERSION)
+release: build
+	@echo "Releasing rabbitr in $(VERSION) version"
+	git tag -a "$(VERSION)" -m "$(APP_NAME)@(VERSION) Release"
+	goreleaser release --rm-dist
+
+snapshot: build
+	@echo "Building snapshot version"
+	git tag -a "$(VERSION)-SNAPSHOT" -m "$(APP_NAME)@(VERSION) Release"
+	goreleaser release --rm-dist --snapshot --skip-publish
+	git tag -d "$(VERSION)-SNAPSHOT"

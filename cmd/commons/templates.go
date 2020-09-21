@@ -1,10 +1,7 @@
 package commons
 
-import "fmt"
-
 func GetAppHelpTemplate() string {
-	tagsCommands := ""
-	return fmt.Sprintf(`NAME:
+	return `NAME:
    {{.Name}}{{if .Usage}} - {{.Usage}}{{end}}
 USAGE:
    {{if .UsageText}}{{.UsageText}}{{else}}{{.HelpName}} {{if .VisibleFlags}}[global options]{{end}}{{if .Commands}} command [command options]{{end}} {{if .ArgsUsage}}{{.ArgsUsage}}{{else}}[arguments...]{{end}}{{end}}{{if .Version}}{{if not .HideVersion}}{{end}}{{end}}{{if .Description}}
@@ -16,7 +13,7 @@ AUTHOR{{with $length := len .Authors}}{{if ne 1 $length}}S{{end}}{{end}}:
 COMMANDS:{{range .VisibleCategories}}{{if .Name}}
 
    {{.Name}}:{{end}}{{range .VisibleCommands}}
-     {{join .Names ", "}}%s {{.Description}}{{end}}{{end}}{{end}}{{if .VisibleFlags}}
+     {{join .Names ", "}} {{"\t"}}{{.Description}}{{end}}{{end}}{{end}}{{if .VisibleFlags}}
 
 GLOBAL OPTIONS:
    {{range $index, $option := .VisibleFlags}}{{if $index}}
@@ -24,7 +21,7 @@ GLOBAL OPTIONS:
 
 COPYRIGHT:
    {{.Copyright}}{{end}}
-`, tagsCommands)
+`
 }
 
 func GetCommandHelpTemplate() string {

@@ -13,15 +13,25 @@ import (
 )
 
 const (
+	// AllSubjects is a default filter for goevaluate that allows for returning all subjects
+	// Useful for safe operations like list.
 	AllSubjects          = "1==1"
+	// NoneOfTheSubjects is a default filter for goevaluate that allows for returning none subjects.
+	// Useful for dangerous operations like pure or delete.
 	NoneOfTheSubjects    = "1!=1"
+	// QueueFilterFields contains fields available when filtering queues
 	QueueFilterFields    = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
+	// ExchangeFilterFields contains fields available when filtering exchanges
 	ExchangeFilterFields = "exchange.Name/Vhost/Type/Durable/AutoDelete/Internal/Arguments (a map with string keys)"
+	// ShovelFilterFields contains fields available when filtering shovels
 	ShovelFilterFields   = "shovel.Name/Vhost"
 )
 
+// ServerFlag common server flag used in most of the commands
 var ServerFlag cli.StringFlag
+// DryRunFlag common dry run flag used in dangerous commands
 var DryRunFlag cli.BoolFlag
+// VHostFlag common virtual host flag used in most of the commands
 var VHostFlag cli.StringFlag
 
 func init() {
@@ -40,6 +50,7 @@ func init() {
 	}
 }
 
+// GetFilterFlag returns a flag describes a filter with given fields
 func GetFilterFlag(defaultValue, availableFields string) cli.StringFlag {
 	return cli.StringFlag{
 		Name:  "filter, f",
@@ -48,6 +59,7 @@ func GetFilterFlag(defaultValue, availableFields string) cli.StringFlag {
 	}
 }
 
+// AskIfValueEmpty prompts user for a value in case it was not provided beforehand
 func AskIfValueEmpty(value, name string) string {
 	value = strings.TrimSpace(value)
 	if len(value) > 0 {
@@ -56,6 +68,7 @@ func AskIfValueEmpty(value, name string) string {
 	return strings.TrimSpace(AskWithValidator(value, name, NotEmptyValidator))
 }
 
+// AskForIntIf prompts user for an int value in case it was not provided beforehand
 func AskForIntIf(testFn func(int) bool, value int, msg string) int {
 	if !testFn(value) {
 		return value
@@ -76,6 +89,7 @@ func AskForIntIf(testFn func(int) bool, value int, msg string) int {
 	return value
 }
 
+// AskForPasswordIfEmpty prompts user for a password in case it was not provided beforehand
 func AskForPasswordIfEmpty(value, name string) string {
 	value = strings.TrimSpace(value)
 	if len(value) > 0 {
@@ -90,6 +104,7 @@ func AskForPasswordIfEmpty(value, name string) string {
 	return strings.TrimSpace(value)
 }
 
+// AskWithValidator prompts user for a value (using provided custom validator) in case it was not provided beforehand
 func AskWithValidator(value, name string, validator survey.Validator) string {
 	value = strings.TrimSpace(value)
 	if validator(value) == nil {
@@ -103,6 +118,7 @@ func AskWithValidator(value, name string, validator survey.Validator) string {
 	return strings.TrimSpace(value)
 }
 
+// NotEmptyValidator returns validator that checks if provided value is not empty
 func NotEmptyValidator(value interface{}) error {
 	text := strings.TrimSpace(value.(string))
 	if len(text) <= 0 {
@@ -111,14 +127,16 @@ func NotEmptyValidator(value interface{}) error {
 	return nil
 }
 
-func IsUrl(str string) bool {
+// IsURL returns true if provided value is an url
+func IsURL(str string) bool {
 	u, err := url.Parse(str)
 	return err == nil && u.Host != "" && (u.Scheme == "http" || u.Scheme == "https")
 }
 
-func IsUrlValidator(value interface{}) error {
+// IsURLValidator returns validator for checking urls
+func IsURLValidator(value interface{}) error {
 	text := strings.TrimSpace(value.(string))
-	if !IsUrl(text) {
+	if !IsURL(text) {
 		return errors.New("please provide valid URL")
 	}
 	return nil

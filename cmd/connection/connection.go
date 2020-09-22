@@ -7,29 +7,30 @@ import (
 	"github.com/urfave/cli"
 )
 
-type ConnectionInfo struct {
+// ConnInfo contains details about a rabbitmq connection
+type ConnInfo struct {
 	ID    string
 	Name  string
 	Vhost string
 }
 
-func getConnections(client *rabbithole.Client, vhost string) (*[]ConnectionInfo, error) {
+func getConnections(client *rabbithole.Client, vhost string) (*[]ConnInfo, error) {
 	connections, err := client.ListConnections()
-	connectionInfos := make([]ConnectionInfo, 0)
+	connectionInfos := make([]ConnInfo, 0)
 	for _, connection := range connections {
 		clientProvidedName := connection.ClientProperties["connection_name"]
 		if clientProvidedName == nil {
 			clientProvidedName = "not-defined"
 		}
 		if len(vhost) <= 0 || vhost == connection.Vhost {
-			connectionInfos = append(connectionInfos, ConnectionInfo{ID: connection.Name, Name: clientProvidedName.(string), Vhost: connection.Vhost})
+			connectionInfos = append(connectionInfos, ConnInfo{ID: connection.Name, Name: clientProvidedName.(string), Vhost: connection.Vhost})
 		}
 	}
 	return &connectionInfos, err
 }
 
 func getConnectionName(subject *interface{}) string {
-	c := (*subject).(ConnectionInfo)
+	c := (*subject).(ConnInfo)
 	return c.Name
 }
 

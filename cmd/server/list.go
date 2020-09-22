@@ -18,7 +18,7 @@ func showConfigurationCmd(ctx *cli.Context) error {
 		if ctx.Bool("show-passwords") {
 			pass = s.Password
 		}
-		commons.Fprintf(w, "%s\t%s\t%s\t%s\t\n", name, s.ApiURL, s.Username, pass)
+		commons.Fprintf(w, "%s\t%s\t%s\t%s\t\n", name, s.APIURL, s.Username, pass)
 	}
 	_ = w.Flush()
 	return nil

@@ -12,17 +12,17 @@ brews:
     # Github repository to push the tap to.
     github:
       owner: smartrecruiters
-      name: homebrew-taps
+      name: public-homebrew-taps
 
     # Allows you to set a custom download strategy. Note that you'll need
     # to implement the strategy and add it to your tap repository.
     # Example: http://lessthanhero.io/post/homebrew-with-private-repo-releases/
     # Default is empty.
-    download_strategy: CustomGitHubPrivateRepositoryReleaseDownloadStrategy
+    # download_strategy: CustomGitHubPrivateRepositoryReleaseDownloadStrategy
 
     # Allows you to add a custom require_relative at the top of the formula template
     # Default is empty
-    custom_require: ./lib/custom_download_strategies.rb
+    # custom_require: ./lib/custom_download_strategies.rb
 
     # Git author used to commit to the repository.
     # Defaults are shown.

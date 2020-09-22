@@ -1,5 +1,6 @@
 package commons
 
+// GetAppHelpTemplate provides general application help template
 func GetAppHelpTemplate() string {
 	return `NAME:
    {{.Name}}{{if .Usage}} - {{.Usage}}{{end}}
@@ -24,6 +25,7 @@ COPYRIGHT:
 `
 }
 
+// GetCommandHelpTemplate provides general command help template
 func GetCommandHelpTemplate() string {
 	return `NAME:
    {{.HelpName}}{{if .Description}} - {{.Description}}{{end}}
@@ -37,6 +39,7 @@ USAGE:
 `
 }
 
+// GetSubcommandHelpTemplate provides general sub command help template
 func GetSubcommandHelpTemplate() string {
 	return `NAME:
    {{.HelpName}} - {{if .Description}}{{.Description}}

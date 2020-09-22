@@ -5,6 +5,7 @@ import (
 	"github.com/urfave/cli"
 )
 
+// GetCommands returns slice of commands for this command category
 func GetCommands() []cli.Command {
 	return []cli.Command{
 		{

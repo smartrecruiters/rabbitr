@@ -13,6 +13,8 @@ import (
 	"github.com/vbauerster/mpb/v5/decor"
 )
 
+// SubjectOperator is a common type to describe different operations performed on a different subjects.
+// It can be used to perform list, delete, pure and other actions of queues, exchanges, etc.
 type SubjectOperator struct {
 	ExecuteAction SubjectActionFn
 	GetName       SubjectNameFn
@@ -20,11 +22,20 @@ type SubjectOperator struct {
 	PrintHeader   HeaderPrinterFn
 }
 
+// SubjectActionFn function is a wrapper for a function that need to be applied on a given subject
 type SubjectActionFn func(client *rabbithole.Client, subject *interface{}, w *tabwriter.Writer)
+// SubjectNameFn function that returns name of the subject in question
 type SubjectNameFn func(subject *interface{}) string
-
+// HeaderPrinterFn is responsible for printing header upon executing action on multiple subjects
 type HeaderPrinterFn func(w *tabwriter.Writer)
 
+// ExecuteOperation is a main function that executes different actions on different subjects.
+// In general it provides following functionalities:
+// - handles progress bar display (useful for time consuming operations)
+// - prints header for the operation that is about to be executed
+// - iterates over provided subjects and uses provided filter to determine if an action should be applied to a subject
+// - executes action on a subject if it matches the filter or skips the action in case common dry-run flag was provided
+// - flushes the output and cleans progress bar after completing operation on all subjects
 func ExecuteOperation(ctx *cli.Context, client *rabbithole.Client, subjects *[]interface{}, subjectOperator SubjectOperator) {
 	filter := ctx.String("filter")
 	dryRun := ctx.Bool("dry-run")

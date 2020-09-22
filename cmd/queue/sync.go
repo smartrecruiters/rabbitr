@@ -19,6 +19,6 @@ func syncQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.Wri
 	q := (*queue).(rabbithole.QueueInfo)
 	commons.Fprintf(w, "Syncing queue: %s/%s\t", q.Vhost, q.Name)
 	res, err := client.SyncQueue(q.Vhost, q.Name)
-	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occured when attempting to sync queue %s/%s", q.Vhost, q.Name), err)
+	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occurred when attempting to sync queue %s/%s", q.Vhost, q.Name), err)
 	commons.HandleGeneralResponseWithWriter(w, res)
 }

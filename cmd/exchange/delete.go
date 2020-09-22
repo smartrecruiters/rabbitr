@@ -19,6 +19,6 @@ func deleteExchangeFn(client *rabbithole.Client, exchange *interface{}, w *tabwr
 	e := (*exchange).(rabbithole.ExchangeInfo)
 	commons.Fprintf(w, "Deleting exchange: %s/%s \t", e.Vhost, e.Name)
 	res, err := client.DeleteExchange(e.Vhost, e.Name)
-	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occured when attempting to delete an exchange %s/%s", e.Vhost, e.Name), err)
+	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occurred when attempting to delete an exchange %s/%s", e.Vhost, e.Name), err)
 	commons.HandleGeneralResponseWithWriter(w, res)
 }

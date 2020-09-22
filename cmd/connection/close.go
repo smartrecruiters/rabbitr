@@ -18,6 +18,6 @@ func closeConnectionFn(client *rabbithole.Client, connection *interface{}, w *ta
 	c := (*connection).(ConnectionInfo)
 	commons.Fprintf(w, "Closing connection %s/%s with name: %s\t", c.Vhost, c.ID, c.Name)
 	res, err := client.CloseConnection(c.ID)
-	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occured when attempting to close connection %s/%s", c.Vhost, c.ID), err)
+	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occurred when attempting to close connection %s/%s", c.Vhost, c.ID), err)
 	commons.HandleGeneralResponseWithWriter(w, res)
 }

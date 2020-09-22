@@ -19,6 +19,6 @@ func purgeQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.Wr
 	q := (*queue).(rabbithole.QueueInfo)
 	commons.Fprintf(w, "Purging queue: %s/%s from %d messages\t", q.Vhost, q.Name, q.Messages)
 	res, err := client.PurgeQueue(q.Vhost, q.Name)
-	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occured when attempting to purge queue %s/%s", q.Vhost, q.Name), err)
+	commons.PrintToWriterIfErrorWithMsg(w, fmt.Sprintf("Error occurred when attempting to purge queue %s/%s", q.Vhost, q.Name), err)
 	commons.HandleGeneralResponseWithWriter(w, res)
 }

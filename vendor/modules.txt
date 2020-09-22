@@ -75,3 +75,4 @@ golang.org/x/text/width
 ## explicit
 # gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
 ## explicit
+# github.com/golang/lint => golang.org/x/lint v0.0.0-20200302205851-738671d3881b

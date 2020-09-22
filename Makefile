@@ -17,7 +17,7 @@ fmt:
 
 install-lint:
 	@echo "Installing golinter"
-	go get -u golang.org/x/lint/golint
+	go get -v golang.org/x/lint/golint
 
 lint:
 	@echo "Executing golint"

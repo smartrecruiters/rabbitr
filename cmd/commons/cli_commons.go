@@ -15,22 +15,24 @@ import (
 const (
 	// AllSubjects is a default filter for goevaluate that allows for returning all subjects
 	// Useful for safe operations like list.
-	AllSubjects          = "1==1"
+	AllSubjects = "1==1"
 	// NoneOfTheSubjects is a default filter for goevaluate that allows for returning none subjects.
 	// Useful for dangerous operations like pure or delete.
-	NoneOfTheSubjects    = "1!=1"
+	NoneOfTheSubjects = "1!=1"
 	// QueueFilterFields contains fields available when filtering queues
-	QueueFilterFields    = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
+	QueueFilterFields = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
 	// ExchangeFilterFields contains fields available when filtering exchanges
 	ExchangeFilterFields = "exchange.Name/Vhost/Type/Durable/AutoDelete/Internal/Arguments (a map with string keys)"
 	// ShovelFilterFields contains fields available when filtering shovels
-	ShovelFilterFields   = "shovel.Name/Vhost"
+	ShovelFilterFields = "shovel.Name/Vhost"
 )
 
 // ServerFlag common server flag used in most of the commands
 var ServerFlag cli.StringFlag
+
 // DryRunFlag common dry run flag used in dangerous commands
 var DryRunFlag cli.BoolFlag
+
 // VHostFlag common virtual host flag used in most of the commands
 var VHostFlag cli.StringFlag
 

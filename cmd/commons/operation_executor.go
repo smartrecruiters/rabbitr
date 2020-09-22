@@ -24,8 +24,10 @@ type SubjectOperator struct {
 
 // SubjectActionFn function is a wrapper for a function that need to be applied on a given subject
 type SubjectActionFn func(client *rabbithole.Client, subject *interface{}, w *tabwriter.Writer)
+
 // SubjectNameFn function that returns name of the subject in question
 type SubjectNameFn func(subject *interface{}) string
+
 // HeaderPrinterFn is responsible for printing header upon executing action on multiple subjects
 type HeaderPrinterFn func(w *tabwriter.Writer)
 

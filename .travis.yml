@@ -3,7 +3,6 @@ go: '1.15'
 
 before_install:
   - go get -v golang.org/x/lint/golint
-  - go get -v golang.org/x/tools/cmd/goimports
 
 script:
   - make ci

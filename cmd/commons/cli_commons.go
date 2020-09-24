@@ -57,7 +57,7 @@ func GetFilterFlag(defaultValue, availableFields string) cli.StringFlag {
 	return cli.StringFlag{
 		Name:  "filter, f",
 		Value: defaultValue,
-		Usage: fmt.Sprintf("Optional. Filter used to narrow list of subjects. It uses https://github.com/Knetic/govaluate engine. Fields available in filter: %s. Functions availble: getMapValueByKey(mapWithStringKeys, keyName)", availableFields),
+		Usage: fmt.Sprintf("Optional. Filter used to narrow list of subjects. It uses https://github.com/Knetic/govaluate engine. Fields available in filter: %s. Functions available: getMapValueByKey(mapWithStringKeys, keyName)", availableFields),
 	}
 }
 

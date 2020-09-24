@@ -4,6 +4,7 @@ import (
 	"os"
 )
 
+// MakeDir creates all directories under given path or returns error
 func MakeDir(path string) (err error) {
 	err = nil
 	if _, err = os.Stat(path); os.IsNotExist(err) {
@@ -12,5 +13,5 @@ func MakeDir(path string) (err error) {
 			Debugf("Make dir error occurred, err: %s", err)
 		}
 	}
-	return
+	return err
 }

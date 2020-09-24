@@ -7,6 +7,7 @@ import (
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 )
 
+// AskForServerSelection prompts user to select a server from the list of available servers if it was not selected beforehand
 func AskForServerSelection(server string) string {
 	server = strings.TrimSpace(server)
 	cfg := commons.GetCachedApplicationConfig()

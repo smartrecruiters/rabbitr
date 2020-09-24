@@ -20,6 +20,7 @@ func init() {
 	}
 }
 
+// GetCustomFilterFunctions returns custom goevaluate functions available for use during filtering
 func GetCustomFilterFunctions() map[string]govaluate.ExpressionFunction {
 	return customFilterFunctions
 }

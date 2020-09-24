@@ -1,9 +1,9 @@
 FILES := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 APP_NAME=rabbitr
-VERSION=1.1.0
+VERSION=1.2.0
 
-.PHONY: all test build fmt install release
+.PHONY: all test build fmt install release ci lint install-lint
 
 all: install fmt build test
 
@@ -15,6 +15,14 @@ fmt:
 	@echo "Formating source code"
 	@goimports -l -w $(FILES)
 
+install-lint:
+	@echo "Installing golinter"
+	go get -v golang.org/x/lint/golint
+
+lint:
+	@echo "Executing golint"
+	golint cmd/...
+
 test:
 	@echo "Running tests"
 	go test -v ./... && echo "TESTS PASSED"
@@ -22,6 +30,8 @@ test:
 build: test
 	@echo "Building sources"
 	go build -v ./...
+
+ci: build test lint
 
 release: build
 	@echo "Releasing rabbitr in $(VERSION) version"

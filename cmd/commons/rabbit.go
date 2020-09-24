@@ -11,6 +11,7 @@ import (
 	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 )
 
+// GetRabbitClient returns rabbit client initialized with a provider server coordinates
 func GetRabbitClient(serverName string) *rabbithole.Client {
 	var exists bool
 	var coordinates ServerCoordinates
@@ -22,11 +23,13 @@ func GetRabbitClient(serverName string) *rabbithole.Client {
 		fmt.Printf("configuration for server %s has not been found, please add it first via: `rabbitr server add` command", serverName)
 		os.Exit(1)
 	}
-	client, err := rabbithole.NewClient(coordinates.ApiURL, coordinates.Username, coordinates.Password)
+	client, err := rabbithole.NewClient(coordinates.APIURL, coordinates.Username, coordinates.Password)
 	AbortIfError(err)
 	return client
 }
 
+// HandleGeneralResponse handles general response from rabbit client.
+// Prints response code and error details if able.
 func HandleGeneralResponse(messagePrefix string, res *http.Response) {
 	if res == nil {
 		return
@@ -35,6 +38,9 @@ func HandleGeneralResponse(messagePrefix string, res *http.Response) {
 	PrintResponseBodyToWriterIfError(os.Stdout, res)
 }
 
+// HandleGeneralResponseWithWriter handles general response from rabbit client.
+// Prints response code and error details if able.
+// Writes output to the provided writer.
 func HandleGeneralResponseWithWriter(w *tabwriter.Writer, res *http.Response) {
 	if res == nil {
 		return
@@ -43,6 +49,8 @@ func HandleGeneralResponseWithWriter(w *tabwriter.Writer, res *http.Response) {
 	PrintResponseBodyToWriterIfError(w, res)
 }
 
+// PrintResponseBodyToWriterIfError prints response body to provided writer
+// for responses with code >= 400 to obtain as much error details as possible.
 func PrintResponseBodyToWriterIfError(w io.Writer, res *http.Response) {
 	if res == nil || res.StatusCode < 400 {
 		return

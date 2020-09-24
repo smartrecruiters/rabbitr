@@ -11,16 +11,19 @@ import (
 	"sync"
 )
 
+// ServerCoordinates describes server configuration parameters
 type ServerCoordinates struct {
-	ApiURL   string `json:"apiUrl"`
+	APIURL   string `json:"apiUrl"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
+// Config holds configuration data uses by the application
 type Config struct {
 	Servers map[string]ServerCoordinates `json:"servers"`
 }
 
+// GetServerNames returns slice of sorted server names taken from configuration
 func (cfg *Config) GetServerNames() []string {
 	i, serverNames := 0, make([]string, len(cfg.Servers))
 	for k := range cfg.Servers {
@@ -34,6 +37,7 @@ func (cfg *Config) GetServerNames() []string {
 var cachedConfig *Config
 var once sync.Once
 
+// GetCachedApplicationConfig returns cached application config
 func GetCachedApplicationConfig() Config {
 	once.Do(func() {
 		cfg, err := GetApplicationConfig()
@@ -43,6 +47,7 @@ func GetCachedApplicationConfig() Config {
 	return *cachedConfig
 }
 
+// GetApplicationConfig returns fresh application config read from a file
 func GetApplicationConfig() (Config, error) {
 	var cfg Config
 	err := getApplicationConfig(&cfg, ApplicationName)
@@ -53,6 +58,7 @@ func GetApplicationConfig() (Config, error) {
 	return cfg, err
 }
 
+// UpdateApplicationConfig writes application config to a file
 func UpdateApplicationConfig(cfg Config) error {
 	return updateApplicationConfig(cfg, ApplicationName)
 }
@@ -77,7 +83,7 @@ func getApplicationConfig(configStructure interface{}, applicationName string) e
 }
 
 func getAppConfigFilePath(applicationName string) (string, error) {
-	appCfgDir, err := GetApplicationConfigDir(applicationName)
+	appCfgDir, err := getApplicationConfigDir(applicationName)
 	if err != nil {
 		return "", err
 	}
@@ -86,7 +92,7 @@ func getAppConfigFilePath(applicationName string) (string, error) {
 	return cfgPath, nil
 }
 
-func GetApplicationConfigDir(applicationName string) (string, error) {
+func getApplicationConfigDir(applicationName string) (string, error) {
 	usr, err := user.Current()
 	if err != nil {
 		return "", err
@@ -95,7 +101,7 @@ func GetApplicationConfigDir(applicationName string) (string, error) {
 }
 
 func updateApplicationConfig(configStructure interface{}, applicationName string) error {
-	appCfgDir, err := GetApplicationConfigDir(applicationName)
+	appCfgDir, err := getApplicationConfigDir(applicationName)
 	if err != nil {
 		return err
 	}
@@ -110,10 +116,10 @@ func updateApplicationConfig(configStructure interface{}, applicationName string
 		return err
 	}
 
-	configJson, err := json.MarshalIndent(configStructure, "", "\t")
+	configJSON, err := json.MarshalIndent(configStructure, "", "\t")
 	if err != nil {
 		return err
 	}
 
-	return ioutil.WriteFile(appCfgPath, configJson, 0644)
+	return ioutil.WriteFile(appCfgPath, configJSON, 0644)
 }

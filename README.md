@@ -57,7 +57,7 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
 
 <a id="tapping-the-repo"></a>
 #### Tapping the repo
-`brew tap smartrecruiters/public-homebrew-taps`
+`brew tap smartrecruiters/public-homebrew-taps git@github.com:smartrecruiters/public-homebrew-taps.git`
 
 <a id="installing"></a>
 #### Installing

@@ -1,5 +1,5 @@
 <p align="center">
-	<h1 align="center">docker-bakery</h1>
+	<h1 align="center">rabbitr</h1>
 	<p align="center">
 		<a href="https://travis-ci.org/smartrecruiters/rabbitr"><img alt="Build" src="https://travis-ci.org/smartrecruiters/rabbitr.svg?branch=master"></a>	
 		<a href="/LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>	

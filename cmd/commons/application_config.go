@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"sort"
 	"sync"
+
+	"github.com/zalando/go-keyring"
 )
 
 // ServerCoordinates describes server configuration parameters
@@ -20,7 +22,7 @@ type ServerCoordinates struct {
 
 // Config holds configuration data uses by the application
 type Config struct {
-	Servers map[string]ServerCoordinates `json:"servers"`
+	Servers map[string]*ServerCoordinates `json:"servers"`
 }
 
 // GetServerNames returns slice of sorted server names taken from configuration
@@ -60,10 +62,17 @@ func GetApplicationConfig() (Config, error) {
 
 // UpdateApplicationConfig writes application config to a file
 func UpdateApplicationConfig(cfg Config) error {
+	if IsOSX() {
+		err := storePasswordsInKeyChain(&cfg)
+		if err != nil {
+			return err
+		}
+	}
+
 	return updateApplicationConfig(cfg, ApplicationName)
 }
 
-func getApplicationConfig(configStructure interface{}, applicationName string) error {
+func getApplicationConfig(configStructure *Config, applicationName string) error {
 	cfgPath, err := getAppConfigFilePath(applicationName)
 	if err != nil {
 		return err
@@ -79,7 +88,17 @@ func getApplicationConfig(configStructure interface{}, applicationName string) e
 		return err
 	}
 
-	return json.Unmarshal(jsonBytes, configStructure)
+	err = json.Unmarshal(jsonBytes, configStructure)
+	if err != nil {
+		return err
+	}
+
+	// for MacOS try to obtain passwords from keychain
+	if IsOSX() {
+		return fillPasswordsFromKeyChain(configStructure)
+	}
+
+	return nil
 }
 
 func getAppConfigFilePath(applicationName string) (string, error) {
@@ -122,4 +141,30 @@ func updateApplicationConfig(configStructure interface{}, applicationName string
 	}
 
 	return ioutil.WriteFile(appCfgPath, configJSON, 0644)
+}
+
+func fillPasswordsFromKeyChain(configStructure *Config) error {
+	for serverName, coordinates := range configStructure.Servers {
+		srvPass, err := keyring.Get(ApplicationName, serverName)
+		if err != nil && err != keyring.ErrNotFound {
+			return err
+		}
+		if len(srvPass) > 0 && err != keyring.ErrNotFound {
+			Debugf("Pass for %s obtained from keychain successfully", serverName)
+			coordinates.Password = srvPass
+		}
+	}
+	return nil
+}
+
+func storePasswordsInKeyChain(configStructure *Config) error {
+	for serverName, coordinates := range configStructure.Servers {
+		err := keyring.Set(ApplicationName, serverName, coordinates.Password)
+		if err != nil {
+			return err
+		}
+		Debugf("Password for %s stored in keychain successfully", serverName)
+		coordinates.Password = ""
+	}
+	return nil
 }

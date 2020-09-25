@@ -17,6 +17,7 @@ require (
 	github.com/stretchr/testify v1.6.1 // indirect
 	github.com/urfave/cli v1.22.4
 	github.com/vbauerster/mpb/v5 v5.3.0
+	github.com/zalando/go-keyring v0.1.0
 	golang.org/x/net v0.0.0-20200822124328-c89045814202 // indirect
 	golang.org/x/sys v0.0.0-20200922070232-aee5d888a860 // indirect
 	golang.org/x/text v0.3.3 // indirect

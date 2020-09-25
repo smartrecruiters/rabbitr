@@ -158,13 +158,16 @@ func fillPasswordsFromKeyChain(configStructure *Config) error {
 }
 
 func storePasswordsInKeyChain(configStructure *Config) error {
+	var result error
 	for serverName, coordinates := range configStructure.Servers {
 		err := keyring.Set(ApplicationName, serverName, coordinates.Password)
 		if err != nil {
-			return err
+			Debugf("Error storing password in keychain for %s, %s", serverName, err)
+			result = err
+		} else {
+			Debugf("Password for %s stored in keychain successfully", serverName)
+			coordinates.Password = ""
 		}
-		Debugf("Password for %s stored in keychain successfully", serverName)
-		coordinates.Password = ""
 	}
-	return nil
+	return result
 }

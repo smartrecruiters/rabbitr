@@ -21,10 +21,10 @@ func addServerCmd(ctx *cli.Context) {
 	commons.AbortIfError(err)
 
 	if cfg.Servers == nil {
-		cfg.Servers = make(map[string]commons.ServerCoordinates, 0)
+		cfg.Servers = make(map[string]*commons.ServerCoordinates, 0)
 	}
 
-	cfg.Servers[serverName] = commons.ServerCoordinates{
+	cfg.Servers[serverName] = &commons.ServerCoordinates{
 		APIURL:   apiURL,
 		Username: username,
 		Password: password,

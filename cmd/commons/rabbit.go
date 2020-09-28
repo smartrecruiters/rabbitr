@@ -14,7 +14,7 @@ import (
 // GetRabbitClient returns rabbit client initialized with a provider server coordinates
 func GetRabbitClient(serverName string) *rabbithole.Client {
 	var exists bool
-	var coordinates ServerCoordinates
+	var coordinates *ServerCoordinates
 
 	cfg, err := GetApplicationConfig()
 	AbortIfError(err)

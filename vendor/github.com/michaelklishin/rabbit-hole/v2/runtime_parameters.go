@@ -6,7 +6,7 @@ import (
 	"net/url"
 )
 
-// RuntimeParameter represents a vhost-scoped parameter.
+// RuntimeParameter represents a vhost-scoped runtime parameter.
 // Value is interface{} to support creating parameters directly from types such as
 // FederationUpstream and ShovelInfo.
 type RuntimeParameter struct {
@@ -137,4 +137,22 @@ func (c *Client) DeleteRuntimeParameter(component, vhost, name string) (res *htt
 	}
 
 	return res, nil
+}
+
+// DeleteAllRuntimeParameters clears all runtime parameters. Only mean to be used
+// in integration tests.
+func (c *Client) DeleteAllRuntimeParameters() (err error) {
+	list, err := c.ListRuntimeParameters()
+	if err != nil {
+		return err
+	}
+
+	for _, rp := range list {
+		_, err = c.DeleteRuntimeParameter(rp.Component, rp.Vhost, rp.Name)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

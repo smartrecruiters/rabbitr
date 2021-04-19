@@ -2,6 +2,7 @@ package message
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/google/uuid"
@@ -22,7 +23,7 @@ func moveMessagesCmd(ctx *cli.Context) error {
 	client := commons.GetRabbitClient(s)
 
 	if duplicate {
-		return moveAndDuplicate(client, srcVHost, srcQueue, dstVHost)
+		return moveAndDuplicate(client, srcVHost, srcQueue, dstVHost, ctx)
 	}
 	return moveOnly(client, srcVHost, srcQueue, dstVHost, ctx)
 }
@@ -30,8 +31,22 @@ func moveMessagesCmd(ctx *cli.Context) error {
 func moveOnly(client *rabbithole.Client, srcVHost string, srcQueue string, dstVHost string, ctx *cli.Context) error {
 	dstQueue := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("dst-queue")), "dst-queue")
 	name := "Move from " + srcQueue
-	declareShovel(client, srcVHost, srcQueue, dstVHost, "", dstQueue, name)
+	declareShovel(client, srcVHost, srcQueue, dstVHost, "", dstQueue, name, ctx.Int("prefetch-count"), getDeleteAfter(ctx))
 	return nil
+}
+
+func getDeleteAfter(ctx *cli.Context) rabbithole.DeleteAfter {
+	deleteAfterStr := ctx.String("delete-after")
+	deleteAfterInt, err := strconv.Atoi(deleteAfterStr)
+	if err == nil && deleteAfterInt > 0 {
+		return rabbithole.DeleteAfter(strconv.Itoa(deleteAfterInt))
+	}
+
+	if len(deleteAfterStr) > 0 {
+		return rabbithole.DeleteAfter(deleteAfterStr)
+	}
+
+	return "queue-length"
 }
 
 func getDstVHost(dstVHost, defaultValue string) string {
@@ -42,7 +57,7 @@ func getDstVHost(dstVHost, defaultValue string) string {
 	return dstVHost
 }
 
-func moveAndDuplicate(client *rabbithole.Client, srcVHost, srcQueue, dstVHost string) error {
+func moveAndDuplicate(client *rabbithole.Client, srcVHost, srcQueue, dstVHost string, ctx *cli.Context) error {
 	id := uuid.New().String()
 	dstQueue1 := srcQueue + ".Mirror1." + id
 	dstQueue2 := srcQueue + ".Mirror2." + id
@@ -54,7 +69,7 @@ func moveAndDuplicate(client *rabbithole.Client, srcVHost, srcQueue, dstVHost st
 	declareQueue(client, dstVHost, dstQueue2)
 	declareBindingForQueue(client, dstVHost, dstExchange, dstQueue1)
 	declareBindingForQueue(client, dstVHost, dstExchange, dstQueue2)
-	declareShovel(client, srcVHost, srcQueue, dstVHost, dstExchange, "", shovelName)
+	declareShovel(client, srcVHost, srcQueue, dstVHost, dstExchange, "", shovelName, ctx.Int("prefetch-count"), getDeleteAfter(ctx))
 	fmt.Printf("Operation completed, please check contents in both %s and %s queues\n", dstQueue1, dstQueue2)
 	return nil
 }
@@ -90,18 +105,18 @@ func declareBindingForQueue(client *rabbithole.Client, srcVHost string, dstExcha
 	commons.AbortIfErrorWithMsg(fmt.Sprintf("Unable to create binding between exchange %s/%s and queue %s/%s queue", srcVHost, dstExchange, srcVHost, queueName), err)
 }
 
-func declareShovel(client *rabbithole.Client, srcVHost, srcQueue, dstVHost, dstExchange, dstQueue, shovelName string) {
+func declareShovel(client *rabbithole.Client, srcVHost, srcQueue, dstVHost, dstExchange, dstQueue, shovelName string, prefetchCount int, deleteAfter rabbithole.DeleteAfter) {
 	res, err := client.DeclareShovel(dstVHost, shovelName, rabbithole.ShovelDefinition{
-		SourceURI:           "amqp:///" + srcVHost,
+		SourceURI:           rabbithole.ShovelURISet{"amqp:///" + srcVHost},
 		SourceQueue:         srcQueue,
-		DestinationURI:      "amqp:///" + dstVHost,
+		DestinationURI:      rabbithole.ShovelURISet{"amqp:///" + dstVHost},
 		ReconnectDelay:      15,
 		DestinationExchange: dstExchange,
 		DestinationQueue:    dstQueue,
-		PrefetchCount:       1000,
+		PrefetchCount:       prefetchCount,
 		AddForwardHeaders:   true,
 		AckMode:             "on-confirm",
-		DeleteAfter:         "queue-length",
+		DeleteAfter:         deleteAfter,
 	})
 	commons.HandleGeneralResponse(fmt.Sprintf("Creating temporary shovel %s/%s to move messages", dstVHost, shovelName), res)
 	commons.AbortIfError(err)

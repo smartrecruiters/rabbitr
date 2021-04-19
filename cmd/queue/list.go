@@ -22,7 +22,7 @@ func printListQueuesHeaderFn(w *tabwriter.Writer) {
 func listQueueFn(client *rabbithole.Client, queue *interface{}, w *tabwriter.Writer) {
 	q := (*queue).(rabbithole.QueueInfo)
 	owner := getQueueOwner(q)
-	commons.Fprintf(w, "%s/%s \t%d\t%d\t%s\t", q.Vhost, q.Name, q.Consumers, q.Messages, owner)
+	commons.Fprintf(w, "%s/%s\t%d\t%d\t%s\t", q.Vhost, q.Name, q.Consumers, q.Messages, owner)
 }
 
 func getQueueOwner(q rabbithole.QueueInfo) string {

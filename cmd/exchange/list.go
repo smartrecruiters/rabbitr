@@ -21,5 +21,5 @@ func printListExchangesHeaderFn(w *tabwriter.Writer) {
 
 func listExchangeFn(client *rabbithole.Client, exchange *interface{}, w *tabwriter.Writer) {
 	e := (*exchange).(rabbithole.ExchangeInfo)
-	commons.Fprintf(w, "%s/%s \t%v\t%v\t%v\t", e.Vhost, e.Name, e.Durable, e.AutoDelete, e.Internal)
+	commons.Fprintf(w, "%s/%s\t%v\t%v\t%v\t", e.Vhost, e.Name, e.Durable, e.AutoDelete, e.Internal)
 }

@@ -51,7 +51,7 @@ func ExecuteOperation(ctx *cli.Context, client *rabbithole.Client, subjects *[]i
 	AbortIfError(err)
 	p, bar := initializeProgressBar(subjects)
 
-	w := tabwriter.NewWriter(os.Stdout, 0, 8, 2, '\t', 0)
+	w := tabwriter.NewWriter(os.Stdout, 0, 8, 2, ' ', 0)
 	if subjectOperator.PrintHeader != nil {
 		subjectOperator.PrintHeader(w)
 	}

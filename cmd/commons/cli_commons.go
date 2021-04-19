@@ -19,6 +19,8 @@ const (
 	// NoneOfTheSubjects is a default filter for goevaluate that allows for returning none subjects.
 	// Useful for dangerous operations like pure or delete.
 	NoneOfTheSubjects = "1!=1"
+	// PolicyFilterFields contains fields available when filtering policies
+	PolicyFilterFields = "policy.Name/Vhost/Pattern/ApplyTo/Priority/Definition (a map with string keys)"
 	// QueueFilterFields contains fields available when filtering queues
 	QueueFilterFields = "queue.Name/Vhost/Durable/AutoDelete/Node/Status/Consumers/Policy/Messages/MessagesReady/Arguments (a map with string keys)"
 	// ExchangeFilterFields contains fields available when filtering exchanges

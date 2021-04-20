@@ -16,7 +16,7 @@ func printListPoliciesHeaderFn(w *tabwriter.Writer) {
 
 func showPolicyFn(client *rabbithole.Client, policy *interface{}, w *tabwriter.Writer) {
 	p := (*policy).(rabbithole.Policy)
-	commons.Fprintf(w, "%s/%s \t%s\t%d\t%s\t%v\t", p.Vhost, p.Name, p.Pattern, p.Priority, p.ApplyTo, p.Definition)
+	commons.Fprintf(w, "%s/%s\t%s\t%d\t%s\t%v\t", p.Vhost, p.Name, p.Pattern, p.Priority, p.ApplyTo, p.Definition)
 }
 
 func listPoliciesCmd(ctx *cli.Context) error {

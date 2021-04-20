@@ -20,5 +20,5 @@ func printListConnectionsHeaderFn(w *tabwriter.Writer) {
 
 func listConnectionFn(client *rabbithole.Client, connection *interface{}, w *tabwriter.Writer) {
 	c := (*connection).(ConnInfo)
-	commons.Fprintf(w, "%s/%s \t%s\t", c.Vhost, c.ID, c.Name)
+	commons.Fprintf(w, "%s/%s\t%s\t", c.Vhost, c.ID, c.Name)
 }

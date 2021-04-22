@@ -10,7 +10,7 @@ builds:
 brews:
   -
     # Github repository to push the tap to.
-    github:
+    tap:
       owner: smartrecruiters
       name: public-homebrew-taps
 

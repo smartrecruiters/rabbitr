@@ -19,14 +19,15 @@ func GetCommands() []cli.Command {
 					Flags: []cli.Flag{
 						commons.ServerFlag,
 						commons.VHostFlag,
-						commons.GetFilterFlag(commons.AllSubjects, "connection.ID/Name/Vhost"),
+						commons.GetFilterFlag(commons.AllSubjects, "connection.ID/Name/Vhost/ClientProperties"),
 					},
 					Description: "Lists connections made to RabbitMQ server",
 					Action:      listConnectionsCmd,
 					Usage: "\n\t" +
 						"rabbitr connections list -s my-server-from-cfg\t# will list all connections made to my-server-from-cfg\n\t" +
 						"rabbitr connections list -s my-server-from-cfg -f 'connection.Name=~\"Federation\"'\t# will list connections made to my-server-from-cfg which's name matches the 'Federation' string\n\t" +
-						"rabbitr connections list -s my-server-from-cfg -f 'connection.ID=~\"10.30\"'\t# will list connections made to my-server-from-cfg which's id matches the '10.30' string\n\t",
+						"rabbitr connections list -s my-server-from-cfg -f 'connection.ID=~\"10.30\"'\t# will list connections made to my-server-from-cfg which's id matches the '10.30' string\n\t" +
+						"rabbitr connections list -s my-server-from-cfg -f 'getMapValueByKey(connection.ClientProperties, \"x-connection-type\")==\"CONSUMER\"'\t# will list connections made to my-server-from-cfg which's connection type is set to 'CONSUMER'\n\t",
 				},
 				{
 					Name: "close",

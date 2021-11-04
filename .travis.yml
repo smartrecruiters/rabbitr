@@ -1,8 +1,8 @@
 language: go
-go: '1.15'
+go: '1.17'
 
 before_install:
-  - go get -v golang.org/x/lint/golint
+  - go install golang.org/x/lint/golint@latest
 
 script:
   - make ci

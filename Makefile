@@ -1,7 +1,7 @@
 FILES := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 APP_NAME=rabbitr
-VERSION=1.3.0
+VERSION=1.3.1
 
 .PHONY: all test build fmt install release ci lint install-lint
 

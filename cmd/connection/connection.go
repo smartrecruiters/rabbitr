@@ -9,9 +9,10 @@ import (
 
 // ConnInfo contains details about a rabbitmq connection
 type ConnInfo struct {
-	ID    string
-	Name  string
-	Vhost string
+	ID               string
+	Name             string
+	Vhost            string
+	ClientProperties map[string]interface{}
 }
 
 func getConnections(client *rabbithole.Client, vhost string) (*[]ConnInfo, error) {
@@ -23,7 +24,7 @@ func getConnections(client *rabbithole.Client, vhost string) (*[]ConnInfo, error
 			clientProvidedName = "not-defined"
 		}
 		if len(vhost) <= 0 || vhost == connection.Vhost {
-			connectionInfos = append(connectionInfos, ConnInfo{ID: connection.Name, Name: clientProvidedName.(string), Vhost: connection.Vhost})
+			connectionInfos = append(connectionInfos, ConnInfo{ID: connection.Name, Name: clientProvidedName.(string), Vhost: connection.Vhost, ClientProperties: connection.ClientProperties})
 		}
 	}
 	return &connectionInfos, err

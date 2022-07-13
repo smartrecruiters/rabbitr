@@ -1,8 +1,8 @@
 <p align="center">
 	<h1 align="center">rabbitr</h1>
 	<p align="center">
-		<a href="https://travis-ci.org/smartrecruiters/rabbitr"><img alt="Build" src="https://travis-ci.org/smartrecruiters/rabbitr.svg?branch=master"></a>	
-		<a href="/LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>	
+		<a href="https://app.travis-ci.com/github/smartrecruiters/rabbitr"><img alt="Build" src="https://app.travis-ci.com/smartrecruiters/rabbitr.svg?branch=master"></a>
+		<a href="/LICENSE"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
 		<a href="https://goreportcard.com/report/github.com/smartrecruiters/rabbitr"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/smartrecruiters/rabbitr?style=flat-square"></a>
 		<a href="http://godoc.org/github.com/smartrecruiters/rabbitr"><img alt="Go Doc" src="https://img.shields.io/badge/godoc-reference-brightgreen.svg?style=flat-square"></a>
 	</p>

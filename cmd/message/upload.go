@@ -76,9 +76,7 @@ func uploadMessagesCmd(ctx *cli.Context) error {
 
 	if confirm {
 		commons.PrintIfTrue(verbose, "Awaiting for all confirmations...")
-		select {
-		case <-publisher.AllPublishedAndConfirmed:
-		}
+		<-publisher.AllPublishedAndConfirmed
 	}
 
 	commons.PrintIfTrue(verbose, fmt.Sprintf("Published %d messages, shutting down...", publisher.NumberOfPublished))

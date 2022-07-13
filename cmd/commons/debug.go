@@ -22,7 +22,7 @@ func Debug(message string) {
 	printfMsg(message)
 }
 
-// DebugIfError prints message when debug mode is enabled and error has occured.
+// DebugIfError prints message when debug mode is enabled and error has occurred.
 func DebugIfError(err error) {
 	if err != nil {
 		printfMsg(err.Error())

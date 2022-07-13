@@ -1,8 +1,8 @@
 <p align="center">
 	<h1 align="center">rabbitr</h1>
 	<p align="center">
-		<a href="https://travis-ci.org/smartrecruiters/rabbitr"><img alt="Build" src="https://travis-ci.org/smartrecruiters/rabbitr.svg?branch=master"></a>	
-		<a href="/LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>	
+		<a href="https://app.travis-ci.com/github/smartrecruiters/rabbitr"><img alt="Build" src="https://app.travis-ci.com/smartrecruiters/rabbitr.svg?branch=master"></a>
+		<a href="/LICENSE"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
 		<a href="https://goreportcard.com/report/github.com/smartrecruiters/rabbitr"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/smartrecruiters/rabbitr?style=flat-square"></a>
 		<a href="http://godoc.org/github.com/smartrecruiters/rabbitr"><img alt="Go Doc" src="https://img.shields.io/badge/godoc-reference-brightgreen.svg?style=flat-square"></a>
 	</p>
@@ -17,7 +17,6 @@
   - [Configuration](#configuration)
   - [Usage](#usage)
   - [Advanced filtering](#advanced-filtering)
-  - [TODO Ideas](#todo-ideas)
 
 <!-- /MarkdownTOC -->
 
@@ -33,6 +32,8 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
      - [x] list
      - [x] close
  - messages
+     - [x] download
+     - [x] upload
      - [x] move
  - queue  
      - [x] list
@@ -83,13 +84,15 @@ Lower level commands provide their own usage, for example `rabbitr queues -h` or
 Example commands:
 
 ```
-rabbitr server add -s my-server-name -api-url http://localhost:15672 -u user -p pass
+rabbitr server add -s my-server-name -api-url http://localhost:15672 -amqp-url amqp://localhost:5672 -u user -p pass
 rabbitr queues list -s my-server-name
 rabbitr queues sync -s my-server-name
 rabbitr queues list -s my-server-name --filter="queue.Consumers==0"
 rabbitr queues list -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
 rabbitr queues purge -s my-server-name --filter="queue.Consumers==0 && queue.Messages>=200"
 rabbitr messages move -s my-server-name --src-vhost vhost1 --src-queue test-queue --duplicate"
+rabbitr messages download -s my-server-name -v vhost1 --queue "sample-queue" --output-dir /tmp --verbose --max-messages=100
+rabbitr messages upload -s my-server-name -v vhost1 --queue "sample-queue-new" --input-dir /tmp --confirm --max-messages=100
 ```
 
 <a id="advanced-filtering"></a>
@@ -98,8 +101,3 @@ Rabbitr uses [goevaluate](https://github.com/Knetic/govaluate#govaluate) library
 It can be useful to determine list of subjects that match given criteria.
 It allows for creating flexible conditions considering for example only queues with particular name, vhost, defined number of consumers or messages.
 Check command descriptions for a list of properties available for use on given resource type.     
-
-<a id="todo-ideas"></a>
-## TODO Ideas
-- move messages from one queue to the other and strip some headers on the way
-- dump messages from a queue to a file

@@ -19,6 +19,7 @@ require (
 	github.com/urfave/cli v1.22.4
 	github.com/vbauerster/mpb/v5 v5.3.0
 	github.com/zalando/go-keyring v0.2.0
+	golang.org/x/sys v0.0.0-20220712014510-0a85c31ab51e // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect

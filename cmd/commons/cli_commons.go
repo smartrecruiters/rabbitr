@@ -93,6 +93,11 @@ func AskForIntIf(testFn func(int) bool, value int, msg string) int {
 	return value
 }
 
+// LessOrEqualThanZeroValidator checks if provided int is > 0
+func LessOrEqualThanZeroValidator(i int) bool {
+	return i <= 0
+}
+
 // AskForPasswordIfEmpty prompts user for a password in case it was not provided beforehand
 func AskForPasswordIfEmpty(value, name string) string {
 	value = strings.TrimSpace(value)
@@ -137,11 +142,26 @@ func IsURL(str string) bool {
 	return err == nil && u.Host != "" && (u.Scheme == "http" || u.Scheme == "https")
 }
 
+// IsAmqpURL returns true if provided value is an amqp url
+func IsAmqpURL(str string) bool {
+	u, err := url.Parse(str)
+	return err == nil && u.Host != "" && (u.Scheme == "amqp" || u.Scheme == "amqps")
+}
+
 // IsURLValidator returns validator for checking urls
 func IsURLValidator(value interface{}) error {
 	text := strings.TrimSpace(value.(string))
 	if !IsURL(text) {
 		return errors.New("please provide valid URL")
+	}
+	return nil
+}
+
+// IsAmqpURLValidator returns validator for checking amqp urls
+func IsAmqpURLValidator(value interface{}) error {
+	text := strings.TrimSpace(value.(string))
+	if !IsAmqpURL(text) {
+		return errors.New("please provide valid AMQP URL")
 	}
 	return nil
 }

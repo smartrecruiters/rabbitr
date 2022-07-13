@@ -10,7 +10,7 @@ import (
 // AskForServerSelection prompts user to select a server from the list of available servers if it was not selected beforehand
 func AskForServerSelection(server string) string {
 	server = strings.TrimSpace(server)
-	cfg := commons.GetCachedApplicationConfig()
+	cfg := commons.GetCachedApplicationConfig(server)
 	serverNames := cfg.GetServerNames()
 	if len(server) <= 0 || !commons.Contains(serverNames, server) {
 		prompt := &survey.Select{

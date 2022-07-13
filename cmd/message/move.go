@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/smartrecruiters/rabbitr/cmd/rabbit"
+
 	"github.com/google/uuid"
 
 	"github.com/smartrecruiters/rabbitr/cmd/server"
@@ -20,7 +22,7 @@ func moveMessagesCmd(ctx *cli.Context) error {
 	srcQueue := commons.AskIfValueEmpty(strings.TrimSpace(ctx.String("src-queue")), "src-queue")
 	dstVHost := getDstVHost(ctx.String("dst-vhost"), srcVHost)
 	duplicate := ctx.Bool("duplicate")
-	client := commons.GetRabbitClient(s)
+	client := rabbit.GetRabbitClient(s)
 
 	if duplicate {
 		return moveAndDuplicate(client, srcVHost, srcQueue, dstVHost, ctx)

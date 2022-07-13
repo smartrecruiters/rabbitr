@@ -10,15 +10,17 @@ import (
 )
 
 func showConfigurationCmd(ctx *cli.Context) error {
-	cfg, _ := commons.GetApplicationConfig()
+	cfg, _ := commons.GetApplicationConfig("")
 	w := tabwriter.NewWriter(os.Stdout, 0, 8, 2, '\t', 0)
-	commons.Fprintln(w, "Server name\tAPI Url\tUser\tPassword")
+	commons.Fprintln(w, "Server name\tApi Url\tAmqp Url\tUser\tPassword")
 	pass := "********"
-	for name, s := range cfg.Servers {
+
+	for _, name := range cfg.GetServerNames() {
+		s := cfg.Servers[name]
 		if ctx.Bool("show-passwords") {
 			pass = s.Password
 		}
-		commons.Fprintf(w, "%s\t%s\t%s\t%s\t\n", name, s.APIURL, s.Username, pass)
+		commons.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t\n", name, s.APIURL, s.AmqpURL, s.Username, pass)
 	}
 	_ = w.Flush()
 	return nil

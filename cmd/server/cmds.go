@@ -20,9 +20,14 @@ func GetCommands() []cli.Command {
 					Flags: []cli.Flag{
 						commons.ServerFlag,
 						cli.StringFlag{
-							Name:  "api-url, url",
+							Name:  "api-url",
 							Value: "",
-							Usage: "Required. RabbitMQ api url",
+							Usage: "Required. RabbitMQ api url, for example http://localhost:15672",
+						},
+						cli.StringFlag{
+							Name:  "amqp-url",
+							Value: "",
+							Usage: "Required. RabbitMQ amqp url, for example amqp://localhost:5672",
 						},
 						cli.StringFlag{
 							Name:  "username, u",
@@ -38,7 +43,7 @@ func GetCommands() []cli.Command {
 					Description: "Add or update provided RabbitMQ server configuration",
 					Action:      addServerCmd,
 					Usage: "\n\t" +
-						"rabbitr server add -s my-server-from-cfg -api-url http://localhost:15672 -u user -p pass\t# will add new or update existing server to the configuration under the my-server-from-cfg name\n\t",
+						"rabbitr server add -s my-server-from-cfg -api-url http://localhost:15672 -amqp-url amqp://localhost:5672 -u user -p pass\t# will add new or update existing server to the configuration under the my-server-from-cfg name\n\t",
 				},
 				{
 					Name:    "delete",

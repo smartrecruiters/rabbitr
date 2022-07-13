@@ -3,6 +3,7 @@ package policy
 import (
 	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
+	"github.com/smartrecruiters/rabbitr/cmd/rabbit"
 	"github.com/smartrecruiters/rabbitr/cmd/server"
 	"github.com/urfave/cli"
 )
@@ -27,7 +28,7 @@ func executePolicyOperation(ctx *cli.Context, policyActionFn commons.SubjectActi
 	s := server.AskForServerSelection(ctx.String(commons.ServerName))
 	vhost := ctx.String(commons.VHost)
 
-	client := commons.GetRabbitClient(s)
+	client := rabbit.GetRabbitClient(s)
 	policies, err := getPolicies(client, vhost)
 	commons.AbortIfError(err)
 

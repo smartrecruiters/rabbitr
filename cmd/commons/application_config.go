@@ -16,6 +16,7 @@ import (
 // ServerCoordinates describes server configuration parameters
 type ServerCoordinates struct {
 	APIURL   string `json:"apiUrl"`
+	AmqpURL  string `json:"amqpUrl"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -36,13 +37,22 @@ func (cfg *Config) GetServerNames() []string {
 	return serverNames
 }
 
+// GetServerPassword returns password for a server
+func (cfg *Config) GetServerPassword(serverName string) string {
+	server := cfg.Servers[serverName]
+	if server == nil {
+		return ""
+	}
+	return server.Password
+}
+
 var cachedConfig *Config
 var once sync.Once
 
 // GetCachedApplicationConfig returns cached application config
-func GetCachedApplicationConfig() Config {
+func GetCachedApplicationConfig(server string) Config {
 	once.Do(func() {
-		cfg, err := GetApplicationConfig()
+		cfg, err := GetApplicationConfig(server)
 		AbortIfError(err)
 		cachedConfig = &cfg
 	})
@@ -50,9 +60,9 @@ func GetCachedApplicationConfig() Config {
 }
 
 // GetApplicationConfig returns fresh application config read from a file
-func GetApplicationConfig() (Config, error) {
+func GetApplicationConfig(server string) (Config, error) {
 	var cfg Config
-	err := getApplicationConfig(&cfg, ApplicationName)
+	err := getApplicationConfig(&cfg, ApplicationName, server)
 	if err != nil {
 		return cfg, err
 	}
@@ -61,9 +71,9 @@ func GetApplicationConfig() (Config, error) {
 }
 
 // UpdateApplicationConfig writes application config to a file
-func UpdateApplicationConfig(cfg Config) error {
+func UpdateApplicationConfig(cfg Config, serverName string) error {
 	if IsOSX() {
-		err := storePasswordsInKeyChain(&cfg)
+		err := storePasswordInKeyChain(serverName, cfg.GetServerPassword(serverName))
 		if err != nil {
 			return err
 		}
@@ -72,7 +82,7 @@ func UpdateApplicationConfig(cfg Config) error {
 	return updateApplicationConfig(cfg, ApplicationName)
 }
 
-func getApplicationConfig(configStructure *Config, applicationName string) error {
+func getApplicationConfig(configStructure *Config, applicationName, server string) error {
 	cfgPath, err := getAppConfigFilePath(applicationName)
 	if err != nil {
 		return err
@@ -95,7 +105,7 @@ func getApplicationConfig(configStructure *Config, applicationName string) error
 
 	// for MacOS try to obtain passwords from keychain
 	if IsOSX() {
-		return fillPasswordsFromKeyChain(configStructure)
+		return fillPasswordsFromKeyChain(configStructure, server)
 	}
 
 	return nil
@@ -143,8 +153,11 @@ func updateApplicationConfig(configStructure interface{}, applicationName string
 	return ioutil.WriteFile(appCfgPath, configJSON, 0644)
 }
 
-func fillPasswordsFromKeyChain(configStructure *Config) error {
+func fillPasswordsFromKeyChain(configStructure *Config, server string) error {
 	for serverName, coordinates := range configStructure.Servers {
+		if len(server) > 0 && serverName != server {
+			continue
+		}
 		srvPass, err := keyring.Get(ApplicationName, serverName)
 		if err != nil && err != keyring.ErrNotFound {
 			return err
@@ -157,17 +170,14 @@ func fillPasswordsFromKeyChain(configStructure *Config) error {
 	return nil
 }
 
-func storePasswordsInKeyChain(configStructure *Config) error {
+func storePasswordInKeyChain(serverName, password string) error {
 	var result error
-	for serverName, coordinates := range configStructure.Servers {
-		err := keyring.Set(ApplicationName, serverName, coordinates.Password)
-		if err != nil {
-			Debugf("Error storing password in keychain for %s, %s", serverName, err)
-			result = err
-		} else {
-			Debugf("Password for %s stored in keychain successfully", serverName)
-			coordinates.Password = ""
-		}
+	err := keyring.Set(ApplicationName, serverName, password)
+	if err != nil {
+		Debugf("Error storing password in keychain for %s, %s", serverName, err)
+		result = err
+	} else {
+		Debugf("Password for %s stored in keychain successfully", serverName)
 	}
 	return result
 }

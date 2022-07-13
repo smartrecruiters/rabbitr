@@ -11,12 +11,12 @@ import (
 func deleteServerConfigCmd(ctx *cli.Context) {
 	serverCfgToRemove := AskForServerSelection(ctx.String(commons.ServerName))
 
-	cfg, err := commons.GetApplicationConfig()
+	cfg, err := commons.GetApplicationConfig(serverCfgToRemove)
 	commons.AbortIfError(err)
 
 	fmt.Printf("Removing configuration for %s server\n", serverCfgToRemove)
 	delete(cfg.Servers, serverCfgToRemove)
 
-	err = commons.UpdateApplicationConfig(cfg)
+	err = commons.UpdateApplicationConfig(cfg, serverCfgToRemove)
 	commons.AbortIfError(err)
 }

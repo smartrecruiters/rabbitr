@@ -3,6 +3,7 @@ package connection
 import (
 	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
+	"github.com/smartrecruiters/rabbitr/cmd/rabbit"
 	"github.com/smartrecruiters/rabbitr/cmd/server"
 	"github.com/urfave/cli"
 )
@@ -39,7 +40,7 @@ func executeConnectionOperation(ctx *cli.Context, connectionActionFn commons.Sub
 	s := server.AskForServerSelection(ctx.String(commons.ServerName))
 	vhost := ctx.String(commons.VHost)
 
-	client := commons.GetRabbitClient(s)
+	client := rabbit.GetRabbitClient(s)
 	queues, err := getConnections(client, vhost)
 	commons.AbortIfError(err)
 

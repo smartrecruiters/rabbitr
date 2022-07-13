@@ -15,3 +15,11 @@ func MakeDir(path string) (err error) {
 	}
 	return err
 }
+
+// FileExists checks whatever file under given path exists
+func FileExists(path string) bool {
+	if _, err := os.Stat(path); err == nil {
+		return true
+	}
+	return false
+}

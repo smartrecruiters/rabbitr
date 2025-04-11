@@ -31,7 +31,7 @@ lint:
 
 test:
 	@echo "Running tests"
-	go test -v ./... && echo "TESTS PASSED"
+	go test -mod=vendor -v ./... && echo "TESTS PASSED"
 
 testall: test
 

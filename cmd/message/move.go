@@ -11,7 +11,7 @@ import (
 
 	"github.com/smartrecruiters/rabbitr/cmd/server"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v3"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 	"github.com/urfave/cli"
 )
@@ -109,9 +109,9 @@ func declareBindingForQueue(client *rabbithole.Client, srcVHost string, dstExcha
 
 func declareShovel(client *rabbithole.Client, srcVHost, srcQueue, dstVHost, dstExchange, dstQueue, shovelName string, prefetchCount int, deleteAfter rabbithole.DeleteAfter) {
 	res, err := client.DeclareShovel(dstVHost, shovelName, rabbithole.ShovelDefinition{
-		SourceURI:           rabbithole.ShovelURISet{"amqp:///" + srcVHost},
+		SourceURI:           rabbithole.URISet{"amqp:///" + srcVHost},
 		SourceQueue:         srcQueue,
-		DestinationURI:      rabbithole.ShovelURISet{"amqp:///" + dstVHost},
+		DestinationURI:      rabbithole.URISet{"amqp:///" + dstVHost},
 		ReconnectDelay:      15,
 		DestinationExchange: dstExchange,
 		DestinationQueue:    dstQueue,

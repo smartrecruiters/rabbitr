@@ -5,7 +5,7 @@ import (
 
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v3"
 	"github.com/urfave/cli"
 )
 
@@ -15,10 +15,10 @@ func listConnectionsCmd(ctx *cli.Context) error {
 }
 
 func printListConnectionsHeaderFn(w *tabwriter.Writer) {
-	commons.Fprintln(w, "Connection Name\tClient Provided Name\t")
+	commons.Fprintln(w, "Connection Name\tUser\tClient Provided Name\t")
 }
 
 func listConnectionFn(client *rabbithole.Client, connection *interface{}, w *tabwriter.Writer) {
 	c := (*connection).(ConnInfo)
-	commons.Fprintf(w, "%s/%s\t%s\t", c.Vhost, c.ID, c.Name)
+	commons.Fprintf(w, "%s/%s\t%s\t%s\t", c.Vhost, c.ID, c.User, c.Name)
 }

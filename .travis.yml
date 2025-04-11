@@ -1,5 +1,5 @@
 language: go
-go: '1.18.4'
+go: '1.24.2'
 
 before_install:
   - go install golang.org/x/lint/golint@latest

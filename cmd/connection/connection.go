@@ -1,7 +1,7 @@
 package connection
 
 import (
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v3"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 	"github.com/smartrecruiters/rabbitr/cmd/rabbit"
 	"github.com/smartrecruiters/rabbitr/cmd/server"
@@ -12,6 +12,7 @@ import (
 type ConnInfo struct {
 	ID               string
 	Name             string
+	User             string
 	Vhost            string
 	ClientProperties map[string]interface{}
 }
@@ -25,7 +26,11 @@ func getConnections(client *rabbithole.Client, vhost string) (*[]ConnInfo, error
 			clientProvidedName = "not-defined"
 		}
 		if len(vhost) <= 0 || vhost == connection.Vhost {
-			connectionInfos = append(connectionInfos, ConnInfo{ID: connection.Name, Name: clientProvidedName.(string), Vhost: connection.Vhost, ClientProperties: connection.ClientProperties})
+			connectionInfos = append(connectionInfos, ConnInfo{ID: connection.Name,
+				Name:             clientProvidedName.(string),
+				Vhost:            connection.Vhost,
+				User:             connection.User,
+				ClientProperties: connection.ClientProperties})
 		}
 	}
 	return &connectionInfos, err
@@ -41,10 +46,10 @@ func executeConnectionOperation(ctx *cli.Context, connectionActionFn commons.Sub
 	vhost := ctx.String(commons.VHost)
 
 	client := rabbit.GetRabbitClient(s)
-	queues, err := getConnections(client, vhost)
+	connections, err := getConnections(client, vhost)
 	commons.AbortIfError(err)
 
-	subjects := commons.ConvertToSliceOfInterfaces(*queues)
+	subjects := commons.ConvertToSliceOfInterfaces(*connections)
 	subjectOperator := commons.SubjectOperator{
 		ExecuteAction: connectionActionFn,
 		GetName:       getConnectionName,

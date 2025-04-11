@@ -9,7 +9,7 @@ import (
 	"syscall"
 	"time"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v3"
 	"github.com/mitchellh/mapstructure"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"

@@ -38,7 +38,6 @@ Small CLI application written in GoLang for easier management of RabbitMQ relate
  - queue  
      - [x] list
      - [x] purge  
-     - [x] sync 
      - [x] delete
  - exchange  
      - [x] list

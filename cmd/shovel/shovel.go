@@ -1,7 +1,7 @@
 package shovel
 
 import (
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v3"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 	"github.com/smartrecruiters/rabbitr/cmd/rabbit"
 	"github.com/smartrecruiters/rabbitr/cmd/server"

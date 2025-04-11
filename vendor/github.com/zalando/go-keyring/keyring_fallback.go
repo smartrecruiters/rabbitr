@@ -6,7 +6,7 @@ import (
 )
 
 // All of the following methods error out on unsupported platforms
-var ErrUnsupportedPlatform = errors.New("Unsupported platform: " + runtime.GOOS)
+var ErrUnsupportedPlatform = errors.New("unsupported platform: " + runtime.GOOS)
 
 type fallbackServiceProvider struct{}
 
@@ -19,5 +19,9 @@ func (fallbackServiceProvider) Get(service, user string) (string, error) {
 }
 
 func (fallbackServiceProvider) Delete(service, user string) error {
+	return ErrUnsupportedPlatform
+}
+
+func (fallbackServiceProvider) DeleteAll(service string) error {
 	return ErrUnsupportedPlatform
 }

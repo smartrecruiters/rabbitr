@@ -7,7 +7,7 @@ import (
 
 	"github.com/urfave/cli"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v3"
 )
 
 func listShovelsCmd(ctx *cli.Context) error {

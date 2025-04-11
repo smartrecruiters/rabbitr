@@ -63,22 +63,6 @@ func GetCommands() []cli.Command {
 						"rabbitr queues purge -s my-server-from-cfg -f 'queue.Messages>200'\t# will purge queues from to my-server-from-cfg with more than 200 messages\n\t" +
 						"rabbitr queues purge -s my-server-from-cfg -f 'queue.Consumers==0'\t# will purge queues from to my-server-from-cfg that have 0 consumers\n\t",
 				},
-				{
-					Name: "sync",
-					Flags: []cli.Flag{
-						commons.ServerFlag,
-						commons.DryRunFlag,
-						commons.VHostFlag,
-						commons.GetFilterFlag(commons.AllSubjects, commons.QueueFilterFields),
-					},
-					Description: "Sync queues on given RabbitMQ server",
-					Action:      syncCmd,
-					Usage: "\n\t" +
-						"rabbitr queues sync -s my-server-from-cfg \t# will sync all queues from my-server-from-cfg\n\t" +
-						"rabbitr queues sync -s my-server-from-cfg -f 'queue.Name=~\"my-queue\"'\t# will sync queues from my-server-from-cfg which's name matches the 'my-queue' string\n\t" +
-						"rabbitr queues sync -s my-server-from-cfg -f 'queue.Messages>200'\t# will sync queues from to my-server-from-cfg with more than 200 messages\n\t" +
-						"rabbitr queues sync -s my-server-from-cfg -f 'queue.Consumers==0'\t# will sync queues from to my-server-from-cfg that have 0 consumers\n\t",
-				},
 			},
 		},
 	}

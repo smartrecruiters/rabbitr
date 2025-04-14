@@ -1,3 +1,4 @@
+version: 2
 # Build customization
 project_name: rabbitr
 builds:
@@ -11,7 +12,7 @@ builds:
 brews:
   -
     # Github repository to push the tap to.
-    tap:
+    repository:
       owner: smartrecruiters
       name: public-homebrew-taps
 

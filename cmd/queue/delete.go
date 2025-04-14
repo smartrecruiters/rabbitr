@@ -6,7 +6,7 @@ import (
 
 	"github.com/urfave/cli"
 
-	rabbithole "github.com/michaelklishin/rabbit-hole/v2"
+	rabbithole "github.com/michaelklishin/rabbit-hole/v3"
 	"github.com/smartrecruiters/rabbitr/cmd/commons"
 )
 

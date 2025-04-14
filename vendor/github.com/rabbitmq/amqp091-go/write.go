@@ -15,6 +15,11 @@ import (
 	"time"
 )
 
+func (w *writer) WriteFrameNoFlush(frame frame) (err error) {
+	err = frame.write(w.w)
+	return
+}
+
 func (w *writer) WriteFrame(frame frame) (err error) {
 	if err = frame.write(w.w); err != nil {
 		return
@@ -63,11 +68,10 @@ func (f *heartbeatFrame) write(w io.Writer) (err error) {
 // +----------+--------+-----------+----------------+------------- - -
 // | class-id | weight | body size | property flags | property list...
 // +----------+--------+-----------+----------------+------------- - -
-//    short     short    long long       short        remainder...
 //
+//	short     short    long long       short        remainder...
 func (f *headerFrame) write(w io.Writer) (err error) {
 	var payload bytes.Buffer
-	var zeroTime time.Time
 
 	if err = binary.Write(&payload, binary.BigEndian, f.ClassId); err != nil {
 		return
@@ -113,7 +117,7 @@ func (f *headerFrame) write(w io.Writer) (err error) {
 	if len(f.Properties.MessageId) > 0 {
 		mask = mask | flagMessageId
 	}
-	if f.Properties.Timestamp != zeroTime {
+	if !f.Properties.Timestamp.IsZero() {
 		mask = mask | flagTimestamp
 	}
 	if len(f.Properties.Type) > 0 {
@@ -418,5 +422,5 @@ func writeTable(w io.Writer, table Table) (err error) {
 		}
 	}
 
-	return writeLongstr(w, string(buf.Bytes()))
+	return writeLongstr(w, buf.String())
 }

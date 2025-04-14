@@ -16,6 +16,9 @@ const (
 	// This error constant can be used to check if the given function parameters were invalid.
 	// For example when trying to create a new generic credential with an empty target name.
 	ErrInvalidParameter = sysERROR_INVALID_PARAMETER
+
+	// ErrBadUsername is returned when the credential's username is invalid.
+	ErrBadUsername = sysERROR_BAD_USERNAME
 )
 
 // GetGenericCredential fetches the generic credential with the given name from Windows credential manager.
@@ -23,7 +26,7 @@ const (
 func GetGenericCredential(targetName string) (*GenericCredential, error) {
 	cred, err := sysCredRead(targetName, sysCRED_TYPE_GENERIC)
 	if cred != nil {
-		return &GenericCredential{*cred}, err
+		return &GenericCredential{Credential: *cred}, err
 	}
 	return nil, err
 }
@@ -55,7 +58,7 @@ func (t *GenericCredential) Delete() (err error) {
 func GetDomainPassword(targetName string) (*DomainPassword, error) {
 	cred, err := sysCredRead(targetName, sysCRED_TYPE_DOMAIN_PASSWORD)
 	if cred != nil {
-		return &DomainPassword{*cred}, err
+		return &DomainPassword{Credential: *cred}, err
 	}
 	return nil, err
 }

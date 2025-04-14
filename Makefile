@@ -1,18 +1,24 @@
 FILES := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 APP_NAME=rabbitr
-VERSION=1.4.0
+VERSION=1.5.0
 
-.PHONY: all test build fmt install release ci lint install-lint
+.PHONY: all test testall build buildall fmt install release ci lint install-lint goversion version
 
 all: install fmt build test
+
+version:
+	@echo $(VERSION)
+
+goversion:
+	@go version
 
 install:
 	@echo "Installing dependencies"
 	go get -v ./...
 
 fmt:
-	@echo "Formating source code"
+	@echo "Formatting source code"
 	@goimports -l -w $(FILES)
 
 install-lint:
@@ -25,7 +31,9 @@ lint:
 
 test:
 	@echo "Running tests"
-	go test -v ./... && echo "TESTS PASSED"
+	go test -mod=vendor -v ./... && echo "TESTS PASSED"
+
+testall: test
 
 build: test
 	@echo "Building sources"
@@ -33,13 +41,15 @@ build: test
 
 ci: build test lint
 
+buildall: ci
+
 release: build
-	@echo "Releasing rabbitr in $(VERSION) version"
+	@echo "Releasing $(APP_NAME) in $(VERSION) version"
 	git tag -a "$(VERSION)" -m "$(APP_NAME)@(VERSION) Release"
-	goreleaser release --rm-dist
+	goreleaser release --clean
 
 snapshot: build
 	@echo "Building snapshot version"
 	git tag -a "$(VERSION)-SNAPSHOT" -m "$(APP_NAME)@(VERSION) Release"
-	goreleaser release --rm-dist --snapshot --skip-publish
+	goreleaser release --clean --snapshot --skip=publish
 	git tag -d "$(VERSION)-SNAPSHOT"

@@ -55,13 +55,6 @@ func PrintToWriterIfErrorWithMsg(w *tabwriter.Writer, msg string, err error) {
 	}
 }
 
-// PrintIfErrorWithMsg prints provided message depending on a provided error
-func PrintIfErrorWithMsg(msg string, err error) {
-	if err != nil {
-		errLog.Printf(msg, err.Error())
-	}
-}
-
 // Fprintln prints provided message to a writer
 func Fprintln(w io.Writer, a ...interface{}) {
 	_, err := fmt.Fprintln(w, a...)
@@ -77,7 +70,7 @@ func Fprintf(w io.Writer, format string, a ...interface{}) {
 // PrintIfError prints error if it was provided
 func PrintIfError(err error) {
 	if err != nil {
-		errLog.Printf(err.Error())
+		errLog.Printf("%s", err.Error())
 	}
 }
 
@@ -132,7 +125,7 @@ func PrintResponseBodyToWriterIfError(w io.Writer, res *http.Response) {
 	buf := new(strings.Builder)
 	_, err := io.Copy(buf, res.Body)
 	if err != nil {
-		Fprintf(w, err.Error())
+		Fprintf(w, "%s", err.Error())
 	}
-	Fprintf(w, buf.String())
+	Fprintf(w, "%s", buf.String())
 }

@@ -14,6 +14,7 @@ type ConnInfo struct {
 	Name             string
 	User             string
 	Vhost            string
+	UsesTLS          bool
 	ClientProperties map[string]interface{}
 }
 
@@ -30,6 +31,7 @@ func getConnections(client *rabbithole.Client, vhost string) (*[]ConnInfo, error
 				Name:             clientProvidedName.(string),
 				Vhost:            connection.Vhost,
 				User:             connection.User,
+				UsesTLS:          connection.UsesTLS,
 				ClientProperties: connection.ClientProperties})
 		}
 	}

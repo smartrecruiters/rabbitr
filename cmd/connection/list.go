@@ -15,10 +15,10 @@ func listConnectionsCmd(ctx *cli.Context) error {
 }
 
 func printListConnectionsHeaderFn(w *tabwriter.Writer) {
-	commons.Fprintln(w, "Connection Name\tUser\tClient Provided Name\t")
+	commons.Fprintln(w, "Connection Name\tUser\tClient Provided Name\tUses TLS\tPlatform\t")
 }
 
 func listConnectionFn(client *rabbithole.Client, connection *interface{}, w *tabwriter.Writer) {
 	c := (*connection).(ConnInfo)
-	commons.Fprintf(w, "%s/%s\t%s\t%s\t", c.Vhost, c.ID, c.User, c.Name)
+	commons.Fprintf(w, "%s/%s\t%s\t%s\t%v\t%s\t", c.Vhost, c.ID, c.User, c.Name, c.UsesTLS, c.ClientProperties["platform"])
 }

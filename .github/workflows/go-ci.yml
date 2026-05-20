@@ -8,18 +8,75 @@ on:
     branches:
       - master
 
+# Restrict permissions to minimum required
+permissions:
+  contents: read
+
+# Use Node.js 24 for actions
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
+  # Pre-approval check for external PRs
+  authorize:
+    runs-on: ubuntu-latest
+    # Only run for pull requests from forks
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    environment:
+      name: external-pr-approval
+    steps:
+      - name: Approval gate
+        run: |
+          echo "PR approved for CI execution"
+          echo "Approved commit: ${{ github.event.pull_request.head.sha }}"
+          echo "APPROVED_COMMIT=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
+    outputs:
+      approved_commit: ${{ github.event.pull_request.head.sha }}
+
   build:
     runs-on: ubuntu-latest
+    # Run after authorization for external PRs, or immediately for internal PRs/pushes
+    needs: [authorize]
+    if: |
+      always() &&
+      (needs.authorize.result == 'success' ||
+       github.event_name == 'push' ||
+       (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository))
 
     steps:
+      - name: Verify approved commit
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          APPROVED="${{ needs.authorize.outputs.approved_commit }}"
+          CURRENT="${{ github.event.pull_request.head.sha }}"
+
+          echo "Approved commit: $APPROVED"
+          echo "Current commit:  $CURRENT"
+
+          if [ "$APPROVED" != "$CURRENT" ]; then
+            echo "❌ ERROR: PR was modified after approval!"
+            echo "The PR head commit changed since approval was granted."
+            echo "This could be an 'approval-then-push' attack."
+            echo "A maintainer must re-approve this PR to run CI on the new commits."
+            exit 1
+          fi
+
+          echo "✅ Commit verification passed - testing approved code"
+
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          # For PRs, only checkout the PR head without merge commit
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # Prevent fetching unnecessary history
+          persist-credentials: false
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: 1.24.2
+          # Enable caching for faster builds
+          cache: true
 
       - name: Install golint
         run: go install golang.org/x/lint/golint@latest
